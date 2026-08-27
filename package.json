@@ -1,0 +1,38 @@
+{
+  "name": "Integration-LLM",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "vitest run",
+    "build": "tsc --project tsconfig.json",
+    "lint": "eslint . --ext .ts",
+    "test:watch": "vitest",
+    "demo": "ts-node --esm src/demo.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Charan-Hari/Integration-LLM.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/Charan-Hari/Integration-LLM/issues"
+  },
+  "homepage": "https://github.com/Charan-Hari/Integration-LLM#readme",
+  "types": "dist/index.d.ts",
+  "devDependencies": {
+    "@types/node": "^26.4.0",
+    "@typescript-eslint/eslint-plugin": "^8.68.0",
+    "@typescript-eslint/parser": "^8.68.0",
+    "dotenv": "^17.4.2",
+    "eslint": "^10.9.1",
+    "node-fetch": "^3.3.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.11"
+  },
+  "tsconfig": null
+}
