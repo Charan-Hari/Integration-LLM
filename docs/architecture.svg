@@ -1,0 +1,185 @@
+<svg viewBox="0 0 1000 700" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .box { fill: white; stroke: #4F46E5; stroke-width: 2; }
+      .box-factory { fill: #F3E5F5; stroke: #7C3AED; stroke-width: 2; }
+      .box-strategy { fill: #E8F5E9; stroke: #10B981; stroke-width: 2; }
+      .box-client { fill: #E1F5FE; stroke: #0284C7; stroke-width: 2; }
+      .text { font-family: Arial, sans-serif; font-size: 14px; font-weight: bold; text-anchor: middle; }
+      .text-small { font-family: Arial, sans-serif; font-size: 12px; text-anchor: middle; }
+      .arrow { stroke: #374151; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .label { font-family: Arial, sans-serif; font-size: 11px; fill: #374151; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#374151" />
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="500" y="30" class="text" style="font-size: 24px;">Integration-LLM Architecture</text>
+
+  <!-- Client Layer -->
+  <rect x="50" y="70" width="150" height="80" class="box-client" rx="5"/>
+  <text x="125" y="105" class="text">Client</text>
+  <text x="125" y="125" class="text-small">Application</text>
+
+  <!-- Service Layer -->
+  <rect x="300" y="70" width="150" height="80" class="box" rx="5"/>
+  <text x="375" y="105" class="text">ChatService</text>
+  <text x="375" y="125" class="text-small">Facade</text>
+
+  <!-- Registry -->
+  <rect x="550" y="70" width="150" height="80" class="box" rx="5"/>
+  <text x="625" y="105" class="text">LLM Registry</text>
+  <text x="625" y="125" class="text-small">Factory Lookup</text>
+
+  <!-- Builder -->
+  <rect x="800" y="70" width="150" height="80" class="box" rx="5"/>
+  <text x="875" y="105" class="text">LLMClient</text>
+  <text x="875" y="125" class="text-small">Builder</text>
+
+  <!-- Arrows from Client to Services -->
+  <path d="M 200 110 L 300 110" class="arrow"/>
+  <text x="245" y="105" class="label">configure</text>
+
+  <path d="M 450 110 L 550 110" class="arrow"/>
+  <text x="495" y="105" class="label">resolve</text>
+
+  <path d="M 700 110 L 800 110" class="arrow"/>
+  <text x="745" y="105" class="label">build</text>
+
+  <!-- Factory Layer -->
+  <text x="125" y="190" class="text" style="font-size: 14px; font-weight: bold;">Factories</text>
+
+  <rect x="30" y="210" width="90" height="70" class="box-factory" rx="5"/>
+  <text x="75" y="235" class="text-small">Azure</text>
+  <text x="75" y="255" class="text-small">Factory</text>
+
+  <rect x="150" y="210" width="90" height="70" class="box-factory" rx="5"/>
+  <text x="195" y="235" class="text-small">Bedrock</text>
+  <text x="195" y="255" class="text-small">Factory</text>
+
+  <rect x="270" y="210" width="90" height="70" class="box-factory" rx="5"/>
+  <text x="315" y="235" class="text-small">Google</text>
+  <text x="315" y="255" class="text-small">Factory</text>
+
+  <rect x="390" y="210" width="90" height="70" class="box-factory" rx="5"/>
+  <text x="435" y="235" class="text-small">Ollama</text>
+  <text x="435" y="255" class="text-small">Factory</text>
+
+  <!-- Registry to Factories -->
+  <path d="M 580 150 L 75 210" class="arrow"/>
+  <path d="M 600 150 L 195 210" class="arrow"/>
+  <path d="M 620 150 L 315 210" class="arrow"/>
+  <path d="M 640 150 L 435 210" class="arrow"/>
+
+  <!-- Strategy Layer -->
+  <text x="125" y="320" class="text" style="font-size: 14px; font-weight: bold;">Strategies</text>
+
+  <rect x="30" y="340" width="90" height="70" class="box-strategy" rx="5"/>
+  <text x="75" y="365" class="text-small">Azure</text>
+  <text x="75" y="385" class="text-small">Strategy</text>
+
+  <rect x="150" y="340" width="90" height="70" class="box-strategy" rx="5"/>
+  <text x="195" y="365" class="text-small">Bedrock</text>
+  <text x="195" y="385" class="text-small">Strategy</text>
+
+  <rect x="270" y="340" width="90" height="70" class="box-strategy" rx="5"/>
+  <text x="315" y="365" class="text-small">Google</text>
+  <text x="315" y="385" class="text-small">Strategy</text>
+
+  <rect x="390" y="340" width="90" height="70" class="box-strategy" rx="5"/>
+  <text x="435" y="365" class="text-small">Ollama</text>
+  <text x="435" y="385" class="text-small">Strategy</text>
+
+  <!-- Factory to Strategy -->
+  <path d="M 75 280 L 75 340" class="arrow"/>
+  <path d="M 195 280 L 195 340" class="arrow"/>
+  <path d="M 315 280 L 315 340" class="arrow"/>
+  <path d="M 435 280 L 435 340" class="arrow"/>
+  <text x="90" y="310" class="label">creates</text>
+  <text x="210" y="310" class="label">creates</text>
+  <text x="330" y="310" class="label">creates</text>
+  <text x="450" y="310" class="label">creates</text>
+
+  <!-- SDK Clients -->
+  <text x="125" y="450" class="text" style="font-size: 14px; font-weight: bold;">SDK Clients</text>
+
+  <rect x="30" y="470" width="90" height="70" class="box" rx="5"/>
+  <text x="75" y="495" class="text-small">Azure SDK</text>
+  <text x="75" y="515" class="text-small">Client</text>
+
+  <rect x="150" y="470" width="90" height="70" class="box" rx="5"/>
+  <text x="195" y="495" class="text-small">Bedrock SDK</text>
+  <text x="195" y="515" class="text-small">Client</text>
+
+  <rect x="270" y="470" width="90" height="70" class="box" rx="5"/>
+  <text x="315" y="495" class="text-small">Google SDK</text>
+  <text x="315" y="515" class="text-small">Client</text>
+
+  <rect x="390" y="470" width="90" height="70" class="box" rx="5"/>
+  <text x="435" y="495" class="text-small">Ollama HTTP</text>
+  <text x="435" y="515" class="text-small">Client</text>
+
+  <!-- Strategy to SDK -->
+  <path d="M 75 410 L 75 470" class="arrow"/>
+  <path d="M 195 410 L 195 470" class="arrow"/>
+  <path d="M 315 410 L 315 470" class="arrow"/>
+  <path d="M 435 410 L 435 470" class="arrow"/>
+  <text x="90" y="440" class="label">uses</text>
+  <text x="210" y="440" class="label">uses</text>
+  <text x="330" y="440" class="label">uses</text>
+  <text x="450" y="440" class="label">uses</text>
+
+  <!-- External APIs -->
+  <text x="125" y="580" class="text" style="font-size: 14px; font-weight: bold;">External APIs</text>
+
+  <rect x="30" y="600" width="90" height="60" class="box" rx="5" style="fill: #FEF3C7; stroke: #F59E0B;"/>
+  <text x="75" y="630" class="text-small">Azure</text>
+  <text x="75" y="645" class="text-small">API</text>
+
+  <rect x="150" y="600" width="90" height="60" class="box" rx="5" style="fill: #FEF3C7; stroke: #F59E0B;"/>
+  <text x="195" y="630" class="text-small">AWS</text>
+  <text x="195" y="645" class="text-small">API</text>
+
+  <rect x="270" y="600" width="90" height="60" class="box" rx="5" style="fill: #FEF3C7; stroke: #F59E0B;"/>
+  <text x="315" y="630" class="text-small">Google</text>
+  <text x="315" y="645" class="text-small">API</text>
+
+  <rect x="390" y="600" width="90" height="60" class="box" rx="5" style="fill: #FEF3C7; stroke: #F59E0B;"/>
+  <text x="435" y="630" class="text-small">Ollama</text>
+  <text x="435" y="645" class="text-small">Service</text>
+
+  <!-- SDK to APIs -->
+  <path d="M 75 540 L 75 600" class="arrow"/>
+  <path d="M 195 540 L 195 600" class="arrow"/>
+  <path d="M 315 540 L 315 600" class="arrow"/>
+  <path d="M 435 540 L 435 600" class="arrow"/>
+
+  <!-- Legend -->
+  <rect x="600" y="210" width="380" height="260" style="fill: none; stroke: #E5E7EB; stroke-width: 1; stroke-dasharray: 5,5;" rx="5"/>
+  <text x="610" y="230" class="text" style="text-anchor: start; font-size: 13px;">Pattern Legend:</text>
+
+  <rect x="610" y="250" width="20" height="20" class="box-client" rx="2"/>
+  <text x="640" y="265" class="label" style="text-anchor: start;">Client Layer - Application entry points</text>
+
+  <rect x="610" y="290" width="20" height="20" class="box" rx="2"/>
+  <text x="640" y="305" class="label" style="text-anchor: start;">Facade & Services - Main API</text>
+
+  <rect x="610" y="330" width="20" height="20" class="box-factory" rx="2"/>
+  <text x="640" y="345" class="label" style="text-anchor: start;">Factory Pattern - Object creation</text>
+
+  <rect x="610" y="370" width="20" height="20" class="box-strategy" rx="2"/>
+  <text x="640" y="385" class="label" style="text-anchor: start;">Strategy Pattern - Runtime switching</text>
+
+  <rect x="610" y="410" width="20" height="20" class="box" rx="2" style="fill: #FEF3C7; stroke: #F59E0B;"/>
+  <text x="640" y="425" class="label" style="text-anchor: start;">Adapter Pattern - API translation</text>
+
+  <!-- Key Flow -->
+  <text x="610" y="460" class="text" style="text-anchor: start; font-size: 13px;">Data Flow:</text>
+  <text x="610" y="480" class="label" style="text-anchor: start; font-weight: normal;">1. Client configures ChatService</text>
+  <text x="610" y="500" class="label" style="text-anchor: start; font-weight: normal;">2. Registry resolves appropriate Factory</text>
+  <text x="610" y="520" class="label" style="text-anchor: start; font-weight: normal;">3. Factory creates Strategy instance</text>
+  <text x="610" y="540" class="label" style="text-anchor: start; font-weight: normal;">4. Strategy uses SDK Client to send message</text>
+  <text x="610" y="560" class="label" style="text-anchor: start; font-weight: normal;">5. Response adapted to unified format</text>
+</svg>

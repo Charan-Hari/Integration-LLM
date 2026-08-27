@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integration-LLM - Provider-Agnostic LLM Integration</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='75' font-weight='bold' fill='%234F46E5'>∞</text></svg>">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <span class="logo-text">∞ Integration-LLM</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#architecture">Architecture</a></li>
+                <li><a href="#demo">Demo</a></li>
+                <li><a href="#docs">Docs</a></li>
+                <li><a href="https://github.com/Charan-Hari/Integration-LLM" target="_blank" class="btn-github">GitHub</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Unified LLM Integration</h1>
+                <p>A TypeScript library for seamless provider-agnostic LLM integration with support for Azure, AWS, Google, and Ollama</p>
+                <div class="hero-buttons">
+                    <a href="#demo" class="btn btn-primary">Try Demo</a>
+                    <a href="#docs" class="btn btn-secondary">Documentation</a>
+                    <a href="https://github.com/Charan-Hari/Integration-LLM" target="_blank" class="btn btn-outline">View on GitHub</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#4F46E5;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#7C3AED;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <circle cx="200" cy="150" r="100" fill="url(#grad1)" opacity="0.2"/>
+                    <circle cx="200" cy="150" r="80" fill="none" stroke="url(#grad1)" stroke-width="2" opacity="0.5"/>
+                    <circle cx="200" cy="150" r="60" fill="none" stroke="url(#grad1)" stroke-width="2" opacity="0.7"/>
+                    <text x="200" y="160" text-anchor="middle" font-size="40" font-weight="bold" fill="#4F46E5">∞</text>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="features">
+        <div class="container">
+            <h2>Key Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔄</div>
+                    <h3>Multi-Provider Support</h3>
+                    <p>Seamlessly switch between Azure OpenAI, AWS Bedrock, Google Vertex AI, and Ollama without changing your code.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🏗️</div>
+                    <h3>Design Patterns</h3>
+                    <p>Built on proven patterns: Strategy, Factory, and Adapter for clean, maintainable code.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Runtime Switching</h3>
+                    <p>Change LLM providers at runtime. No recompilation or redeployment needed.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📦</div>
+                    <h3>Type-Safe</h3>
+                    <p>Full TypeScript support with comprehensive type definitions and JSDoc documentation.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🧪</div>
+                    <h3>Well-Tested</h3>
+                    <p>Comprehensive test coverage using Vitest ensuring reliability and correctness.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🚀</div>
+                    <h3>Easy Integration</h3>
+                    <p>Simple, fluent API for easy integration into your existing TypeScript projects.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="architecture" class="architecture">
+        <div class="container">
+            <h2>Architecture</h2>
+            <div class="architecture-content">
+                <div class="architecture-text">
+                    <h3>Design Patterns at Work</h3>
+                    <p><strong>Strategy Pattern:</strong> Each LLM platform implements a unified LLMStrategy interface, allowing runtime switching without client code changes.</p>
+                    <p><strong>Abstract Factory Pattern:</strong> Dedicated factories create strategy instances for each platform, decoupling creation from usage.</p>
+                    <p><strong>Adapter Pattern:</strong> Platform-specific implementations adapt vendor APIs into a unified ChatResponse format.</p>
+                    <div class="platform-list">
+                        <h4>Supported Platforms:</h4>
+                        <ul>
+                            <li>🔷 <strong>Azure OpenAI</strong> - gpt-4o, gpt-4o-mini, gpt-35-turbo</li>
+                            <li>🔶 <strong>AWS Bedrock</strong> - Claude v2, Mistral, Llama 2</li>
+                            <li>🟠 <strong>Google Vertex AI</strong> - Gemini Pro, Text Unicorn</li>
+                            <li>⚫ <strong>Ollama</strong> - Llama 3.2, Gemma, Qwen</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="architecture-diagram">
+                    <img src="architecture.svg" alt="Architecture Diagram" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="demo" class="demo">
+        <div class="container">
+            <h2>Interactive Demo</h2>
+            <div class="demo-container">
+                <div class="demo-config">
+                    <h3>Configuration</h3>
+                    <div class="form-group">
+                        <label for="platform">Platform:</label>
+                        <select id="platform">
+                            <option value="azure">Azure OpenAI</option>
+                            <option value="bedrock">AWS Bedrock</option>
+                            <option value="google">Google Vertex AI</option>
+                            <option value="ollama" selected>Ollama</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="model">Model:</label>
+                        <select id="model">
+                            <option value="llama3.2">llama3.2</option>
+                            <option value="gemma3">gemma3</option>
+                            <option value="qwen3">qwen3</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="prompt">Prompt:</label>
+                        <textarea id="prompt" placeholder="Enter your prompt here..." rows="4">Explain the adapter pattern in software design.</textarea>
+                    </div>
+                    <button id="sendBtn" class="btn btn-primary" style="width: 100%;">Send Message</button>
+                </div>
+                <div class="demo-output">
+                    <h3>Response</h3>
+                    <div id="responseBox" class="response-box">
+                        <p class="placeholder">Configure and send a message to see the response here...</p>
+                    </div>
+                </div>
+            </div>
+            <div class="demo-code">
+                <h3>Code Example</h3>
+                <pre><code id="codeExample">import { ChatService, registerDefaultFactories } from 'integration-llm';
+
+registerDefaultFactories();
+
+const chatService = new ChatService();
+chatService.configure({
+  platform: 'ollama',
+  model: 'llama3.2'
+});
+
+const response = await chatService.send(
+  'Explain the adapter pattern in software design.'
+);
+
+console.log(response.content);</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <section id="docs" class="docs">
+        <div class="container">
+            <h2>Documentation</h2>
+            <div class="docs-grid">
+                <div class="doc-card">
+                    <h3>📖 Getting Started</h3>
+                    <p>Learn how to install and set up Integration-LLM in your project.</p>
+                    <a href="docs.html#getting-started" class="card-link">Read Guide →</a>
+                </div>
+                <div class="doc-card">
+                    <h3>💻 API Reference</h3>
+                    <p>Complete API documentation with types and method signatures.</p>
+                    <a href="docs.html#api-reference" class="card-link">View API →</a>
+                </div>
+                <div class="doc-card">
+                    <h3>📚 Examples</h3>
+                    <p>Code examples showing common usage patterns and best practices.</p>
+                    <a href="docs.html#examples" class="card-link">See Examples →</a>
+                </div>
+                <div class="doc-card">
+                    <h3>🎯 Patterns</h3>
+                    <p>Deep dive into the design patterns used in this library.</p>
+                    <a href="docs.html#patterns" class="card-link">Learn Patterns →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Integration-LLM. Built with TypeScript and designed with ❤️</p>
+            <div class="footer-links">
+                <a href="https://github.com/Charan-Hari/Integration-LLM" target="_blank">GitHub</a>
+                <a href="https://github.com/Charan-Hari/Integration-LLM/issues" target="_blank">Issues</a>
+                <a href="https://github.com/Charan-Hari/Integration-LLM/blob/main/LICENSE" target="_blank">License</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
