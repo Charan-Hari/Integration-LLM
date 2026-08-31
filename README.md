@@ -4,7 +4,7 @@ A TypeScript library demonstrating a **provider-agnostic LLM integration layer**
 
 ## 🎯 Overview
 
-Integration-LLM provides a clean abstraction layer for interacting with Large Language Models across different cloud providers. The architecture demonstrates three key design patterns:
+Integration-LLM provides a clean abstraction layer for interacting with Large Language Models across different cloud providers. The architecture demonstrates 3 key design patterns:
 
 - **Strategy Pattern**: Unified `LLMStrategy` interface enables runtime provider switching
 - **Abstract Factory Pattern**: Each platform has a dedicated factory for creating strategy instances
