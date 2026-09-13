@@ -13,6 +13,16 @@ Built with proven design patterns (**Strategy**, **Abstract Factory**, **Adapter
 
 ---
 
+## 📸 Live Preview
+
+![Integration-LLM Demo Walkthrough](docs/assets/demo-walkthrough.gif)
+
+| Landing Page | Interactive Playground | Dark Mode |
+|:---:|:---:|:---:|
+| ![Hero](docs/assets/hero-screenshot.png) | ![Playground](docs/assets/playground-screenshot.png) | ![Dark Mode](docs/assets/dark-mode-screenshot.png) |
+
+---
+
 ## 🌟 Key Features
 
 - **Multi-Cloud & Local Provider Support**: Seamless integration for Azure OpenAI, AWS Bedrock, Google Vertex AI, Ollama (Local/Self-hosted), OpenAI Direct, and Anthropic Claude.
