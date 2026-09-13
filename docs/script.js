@@ -246,4 +246,70 @@ console.log('Resilient Response:', response.content);`;
 
   // Initial call
   populateModels();
+
+  // --- Hero Live Terminal Animation (auto-plays, cycles providers) ---
+  const heroTerminal = document.getElementById('heroTerminal');
+  if (heroTerminal) {
+    const demoSequence = [
+      { platform: 'ollama', model: 'llama3.2' },
+      { platform: 'azure', model: 'gpt-4o' },
+      { platform: 'openai', model: 'gpt-4o-mini' },
+      { platform: 'anthropic', model: 'claude-3-5-sonnet' },
+      { platform: 'bedrock', model: 'llama3.2' },
+      { platform: 'google', model: 'gemini-pro' }
+    ];
+
+    let seqIndex = 0;
+
+    function escapeHtml(str) {
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    function buildScript(platform, model) {
+      const responseText = (mockResponses[platform] && mockResponses[platform][model])
+        || `Standard completion response for ${platform} (${model}).`;
+
+      return [
+        { text: `import { ChatService, registerDefaultFactories } from 'integration-llm';\n\n`, cls: '' },
+        { text: `registerDefaultFactories();\n`, cls: 'line-keyword' },
+        { text: `const chatService = new ChatService();\n\n`, cls: '' },
+        { text: `chatService.configure({ platform: '${platform}', model: '${model}' });\n\n`, cls: 'line-string' },
+        { text: `const res = await chatService.send('Explain the Adapter pattern.');\n`, cls: '' },
+        { text: `> `, cls: 'line-label' },
+        { text: `${responseText}\n`, cls: 'line-success' }
+      ];
+    }
+
+    async function typeSequence(entries) {
+      heroTerminal.innerHTML = '';
+      for (const entry of entries) {
+        const span = document.createElement('span');
+        if (entry.cls) span.className = entry.cls;
+        heroTerminal.appendChild(span);
+
+        for (let i = 0; i < entry.text.length; i++) {
+          span.textContent += entry.text[i];
+          // eslint-disable-next-line no-await-in-loop
+          await new Promise((resolve) => setTimeout(resolve, 8));
+        }
+      }
+      const cursor = document.createElement('span');
+      cursor.className = 'blinking-cursor';
+      heroTerminal.appendChild(cursor);
+    }
+
+    async function runDemoLoop() {
+      // eslint-disable-next-line no-constant-condition
+      while (true) {
+        const { platform, model } = demoSequence[seqIndex % demoSequence.length];
+        // eslint-disable-next-line no-await-in-loop
+        await typeSequence(buildScript(platform, model));
+        // eslint-disable-next-line no-await-in-loop
+        await new Promise((resolve) => setTimeout(resolve, 2600));
+        seqIndex += 1;
+      }
+    }
+
+    runDemoLoop();
+  }
 });
