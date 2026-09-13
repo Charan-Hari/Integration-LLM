@@ -4,7 +4,7 @@ import tsPlugin from '@typescript-eslint/eslint-plugin';
 
 export default [
   {
-    ignores: ['dist/**', 'node_modules/**', 'docs/**']
+    ignores: ['../dist/**', '../node_modules/**', '../docs/**']
   },
   {
     files: ['**/*.ts'],
@@ -12,6 +12,7 @@ export default [
       parser: tsParser,
       parserOptions: {
         project: ['./tsconfig.eslint.json'],
+        tsconfigRootDir: import.meta.dirname,
         sourceType: 'module'
       }
     },
