@@ -17,6 +17,8 @@
             <ul class="nav-links">
                 <li><a href="index.html#home">Home</a></li>
                 <li><a href="index.html#demo">Playground</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#architecture">Architecture</a></li>
                 <li><a href="#getting-started">Getting Started</a></li>
                 <li><a href="#api-reference">API Reference</a></li>
                 <li><a href="#patterns">Design Patterns</a></li>
@@ -25,6 +27,70 @@
             </ul>
         </div>
     </nav>
+
+    <!-- Key Features -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">Key Architectural Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔄</div>
+                    <h3>Multi-Cloud Strategy</h3>
+                    <p>Unified API interface across Azure OpenAI, AWS Bedrock, Google Vertex AI, Ollama, OpenAI, and Anthropic Claude.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🏗️</div>
+                    <h3>Design Patterns</h3>
+                    <p>Architected using Strategy, Abstract Factory, Facade, Builder, and Adapter design patterns for clean extensibility.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Zero-Downtime Switching</h3>
+                    <p>Swap primary LLM providers at runtime without recompiling code or redeploying microservices.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>Resilient Failover</h3>
+                    <p>Built-in <code>FallbackChatService</code> automatically fails over to backup LLMs if primary endpoints experience downtime.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔁</div>
+                    <h3>Retry with Backoff</h3>
+                    <p>New <code>RetryChatService</code> wraps any strategy with configurable exponential-backoff retries for transient errors.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🧩</div>
+                    <h3>Prompt Templating</h3>
+                    <p>New <code>PromptTemplate</code> utility supports <code>{{variable}}</code> interpolation for reusable, type-checked prompts.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📡</div>
+                    <h3>Streaming Responses</h3>
+                    <p>Token-by-token <code>stream()</code> API across all six providers for responsive, real-time UIs.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Token Estimation</h3>
+                    <p>Built-in token heuristic calculator for tracking prompt & completion token consumption across platforms.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📦</div>
+                    <h3>Type-Safe TypeScript</h3>
+                    <p>100% strict TypeScript definition files, Vitest test suite, and CI/CD GitHub Actions pipeline included.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture Section -->
+    <section id="architecture" class="architecture-section">
+        <div class="container">
+            <h2 class="section-title">System Architecture</h2>
+            <div class="arch-svg-container">
+                <img src="architecture.svg" alt="Integration-LLM Architecture Diagram">
+            </div>
+        </div>
+    </section>
 
     <div class="container" style="padding: 40px 24px;">
         <!-- Getting Started -->
@@ -123,7 +189,7 @@ const usage = TokenCalculator.createUsage('User prompt', 'Model completion');</p
     <!-- Footer -->
     <footer>
         <div class="container">
-            <p>&copy; 2026 Integration-LLM. Released under the ISC License. | Maintained by <a href="https://github.com/Charan-Hari" target="_blank">Charan Hari</a></p>
+            <p>&copy; 2026 Integration-LLM. Free & open-source under the MIT License. | Maintained by <a href="https://github.com/Charan-Hari" target="_blank">Charan Hari</a></p>
         </div>
     </footer>
 

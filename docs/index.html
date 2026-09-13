@@ -16,9 +16,9 @@
             </a>
             <ul class="nav-links">
                 <li><a href="#home">Home</a></li>
-                <li><a href="#features">Features</a></li>
                 <li><a href="#demo">Playground</a></li>
-                <li><a href="#architecture">Architecture</a></li>
+                <li><a href="docs.html#features">Features</a></li>
+                <li><a href="docs.html#architecture">Architecture</a></li>
                 <li><a href="docs.html">Documentation</a></li>
                 <li><button id="themeToggle" class="theme-toggle-btn">🌙 Dark</button></li>
                 <li><a href="https://github.com/Charan-Hari/Integration-LLM" target="_blank" class="btn btn-primary" style="padding: 6px 14px; font-size: 0.85rem;">GitHub Repo</a></li>
@@ -30,69 +30,64 @@
     <section id="home" class="hero">
         <div class="hero-bg-glow"></div>
         <div class="container">
-            <div class="hero-strip">
-                <span class="eyebrow">🔌 Integration-LLM</span>
-                <div class="hero-stats">
-                    <div class="hero-stat"><strong>6</strong><span>Providers</span></div>
-                    <div class="hero-stat"><strong>5</strong><span>Design Patterns</span></div>
-                    <div class="hero-stat"><strong>100%</strong><span>Type-Safe</span></div>
-                </div>
-            </div>
-
             <!-- Interactive Demo / Playground: this IS the hero now -->
             <div id="demo" class="demo-card hero-demo-card">
                 <div class="demo-grid">
                     <!-- Config Controls -->
                     <div class="demo-controls">
-                        <h3 style="margin-bottom: 20px;">Configuration</h3>
-                        <div class="form-group">
-                            <label for="platform">Provider Platform:</label>
-                            <select id="platform">
-                                <option value="azure">Azure OpenAI</option>
-                                <option value="bedrock">AWS Bedrock</option>
-                                <option value="google">Google Vertex AI</option>
-                                <option value="ollama" selected>Ollama (Local / Node)</option>
-                                <option value="openai">OpenAI Direct</option>
-                                <option value="anthropic">Anthropic Claude Direct</option>
-                            </select>
+                        <h3 class="demo-panel-title">⚙️ Configuration</h3>
+                        <div class="config-row">
+                            <div class="form-group">
+                                <label for="platform">Provider Platform</label>
+                                <select id="platform">
+                                    <option value="azure">Azure OpenAI</option>
+                                    <option value="bedrock">AWS Bedrock</option>
+                                    <option value="google">Google Vertex AI</option>
+                                    <option value="ollama" selected>Ollama (Local / Node)</option>
+                                    <option value="openai">OpenAI Direct</option>
+                                    <option value="anthropic">Anthropic Claude Direct</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="model">Target Model</label>
+                                <select id="model">
+                                    <!-- Populated dynamically -->
+                                </select>
+                            </div>
+                        </div>
+                        <div class="config-row">
+                            <div class="form-group">
+                                <label>Temperature: <span id="tempVal">0.7</span></label>
+                                <input type="range" id="temperature" min="0" max="1" step="0.1" value="0.7">
+                            </div>
+                            <div class="form-group">
+                                <label for="maxTokens">Max Tokens</label>
+                                <input type="number" id="maxTokens" value="500" class="form-control">
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label for="model">Target Model:</label>
-                            <select id="model">
-                                <!-- Populated dynamically -->
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Temperature (<span id="tempVal">0.7</span>):</label>
-                            <input type="range" id="temperature" min="0" max="1" step="0.1" value="0.7">
-                        </div>
-                        <div class="form-group">
-                            <label for="maxTokens">Max Tokens:</label>
-                            <input type="number" id="maxTokens" value="500" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="systemPrompt">System Prompt:</label>
+                            <label for="systemPrompt">System Prompt</label>
                             <input type="text" id="systemPrompt" value="You are a helpful software architecture assistant." class="form-control">
                         </div>
                         <div class="form-group">
-                            <label for="prompt">User Prompt:</label>
-                            <textarea id="prompt" rows="3">Explain how the Adapter Pattern standardizes LLM provider responses.</textarea>
-                            <div style="margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap;">
-                                <button class="btn btn-outline preset-btn" data-prompt="Explain Strategy Pattern in TypeScript." style="padding: 4px 8px; font-size: 0.78rem;">Strategy Pattern</button>
-                                <button class="btn btn-outline preset-btn" data-prompt="Show example of multi-provider failover." style="padding: 4px 8px; font-size: 0.78rem;">Failover Strategy</button>
+                            <label for="prompt">User Prompt</label>
+                            <textarea id="prompt" rows="5">Explain how the Adapter Pattern standardizes LLM provider responses.</textarea>
+                            <div class="preset-row">
+                                <button class="btn btn-outline preset-btn" data-prompt="Explain Strategy Pattern in TypeScript.">Strategy Pattern</button>
+                                <button class="btn btn-outline preset-btn" data-prompt="Show example of multi-provider failover.">Failover Strategy</button>
                             </div>
                         </div>
-                        <div class="form-group form-inline">
+                        <div class="form-group toggle-row">
                             <label class="checkbox-label"><input type="checkbox" id="streamToggle"> Stream response token-by-token</label>
                             <label class="checkbox-label"><input type="checkbox" id="retryToggle"> Simulate transient failure + auto-retry</label>
                         </div>
-                        <button id="sendBtn" class="btn btn-primary" style="width: 100%;">🚀 Execute Request</button>
+                        <button id="sendBtn" class="btn btn-primary btn-execute">🚀 Execute Request</button>
                     </div>
 
                     <!-- Output & Snippets -->
                     <div class="demo-output-area">
                         <div class="response-header">
-                            <h3>Execution Output</h3>
+                            <h3 class="demo-panel-title">▶️ Execution Output</h3>
                             <div>
                                 <span class="badge" id="latencyBadge">0 ms</span>
                                 <span class="badge" id="tokenBadge" style="background-color: var(--secondary);">0 tokens</span>
@@ -100,19 +95,19 @@
                         </div>
                         <div id="responseBox" class="response-box">Click "Execute Request" to test runtime execution...</div>
 
-                        <div style="margin-top: 24px;">
+                        <div class="snippet-block">
                             <div class="response-header">
-                                <h3>Generated Code Snippet</h3>
-                                <button id="copyCodeBtn" class="btn btn-outline" style="padding: 4px 10px; font-size: 0.8rem;">📋 Copy Code</button>
+                                <h3 class="demo-panel-title">{ } Generated Code</h3>
+                                <button id="copyCodeBtn" class="btn btn-outline btn-copy">📋 Copy</button>
                             </div>
 
                             <div class="tab-nav">
                                 <button class="tab-btn active" data-lang="ts">TypeScript</button>
                                 <button class="tab-btn" data-lang="js">CommonJS</button>
-                                <button class="tab-btn" data-lang="builder">Builder Pattern</button>
-                                <button class="tab-btn" data-lang="fallback">Resilient Fallback</button>
-                                <button class="tab-btn" data-lang="retry">Retry + Backoff</button>
-                                <button class="tab-btn" data-lang="template">Prompt Template</button>
+                                <button class="tab-btn" data-lang="builder">Builder</button>
+                                <button class="tab-btn" data-lang="fallback">Fallback</button>
+                                <button class="tab-btn" data-lang="retry">Retry</button>
+                                <button class="tab-btn" data-lang="template">Template</button>
                             </div>
 
                             <pre id="codeSnippetBox" class="code-snippet-box"></pre>
@@ -122,72 +117,8 @@
             </div>
 
             <div class="hero-buttons">
-                <a href="docs.html" class="btn btn-secondary">📖 API Documentation</a>
+                <a href="docs.html#features" class="btn btn-secondary">📖 Features &amp; Docs</a>
                 <a href="https://github.com/Charan-Hari/Integration-LLM" target="_blank" class="btn btn-outline">⭐ Star on GitHub</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Key Features -->
-    <section id="features" class="features">
-        <div class="container">
-            <h2 class="section-title">Key Architectural Features</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">🔄</div>
-                    <h3>Multi-Cloud Strategy</h3>
-                    <p>Unified API interface across Azure OpenAI, AWS Bedrock, Google Vertex AI, Ollama, OpenAI, and Anthropic Claude.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🏗️</div>
-                    <h3>Design Patterns</h3>
-                    <p>Architected using Strategy, Abstract Factory, Facade, Builder, and Adapter design patterns for clean extensibility.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">⚡</div>
-                    <h3>Zero-Downtime Switching</h3>
-                    <p>Swap primary LLM providers at runtime without recompiling code or redeploying microservices.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🛡️</div>
-                    <h3>Resilient Failover</h3>
-                    <p>Built-in <code>FallbackChatService</code> automatically fails over to backup LLMs if primary endpoints experience downtime.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🔁</div>
-                    <h3>Retry with Backoff</h3>
-                    <p>New <code>RetryChatService</code> wraps any strategy with configurable exponential-backoff retries for transient errors.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🧩</div>
-                    <h3>Prompt Templating</h3>
-                    <p>New <code>PromptTemplate</code> utility supports <code>{{variable}}</code> interpolation for reusable, type-checked prompts.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📡</div>
-                    <h3>Streaming Responses</h3>
-                    <p>Token-by-token <code>stream()</code> API across all six providers for responsive, real-time UIs.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📊</div>
-                    <h3>Token Estimation</h3>
-                    <p>Built-in token heuristic calculator for tracking prompt & completion token consumption across platforms.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📦</div>
-                    <h3>Type-Safe TypeScript</h3>
-                    <p>100% strict TypeScript definition files, Vitest test suite, and CI/CD GitHub Actions pipeline included.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Architecture Section -->
-    <section id="architecture" class="architecture-section">
-        <div class="container">
-            <h2 class="section-title">System Architecture</h2>
-            <div class="arch-svg-container">
-                <img src="architecture.svg" alt="Integration-LLM Architecture Diagram">
             </div>
         </div>
     </section>
@@ -195,7 +126,7 @@
     <!-- Footer -->
     <footer>
         <div class="container">
-            <p>&copy; 2026 Integration-LLM. Released under the ISC License. | Maintained by <a href="https://github.com/Charan-Hari" target="_blank">Charan Hari</a></p>
+            <p>&copy; 2026 Integration-LLM. Free & open-source under the MIT License. | Maintained by <a href="https://github.com/Charan-Hari" target="_blank">Charan Hari</a></p>
             <p style="margin-top: 8px;">Documentation hosted on <a href="https://charan-hari.github.io/Integration-LLM/" target="_blank">GitHub Pages</a></p>
         </div>
     </footer>

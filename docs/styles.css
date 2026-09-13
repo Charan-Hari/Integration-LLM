@@ -38,11 +38,16 @@
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
+html {
+  overflow-x: hidden;
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   background-color: var(--light);
   color: var(--text-main);
   line-height: 1.6;
+  overflow-x: hidden;
 }
 
 .container {
@@ -94,6 +99,12 @@ body {
 
 .nav-links a:hover {
   color: var(--primary);
+}
+
+@media (max-width: 850px) {
+  .nav-links {
+    display: none;
+  }
 }
 
 .theme-toggle-btn {
@@ -168,17 +179,6 @@ body {
   z-index: 0;
 }
 
-.hero-strip {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin-bottom: 18px;
-}
-
 .hero-demo-card {
   position: relative;
   z-index: 1;
@@ -186,64 +186,12 @@ body {
   max-width: 1100px;
 }
 
-.eyebrow {
-  display: inline-block;
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  color: var(--primary);
-  font-size: 0.8rem;
-  font-weight: 700;
-  padding: 6px 14px;
-  border-radius: 999px;
-  box-shadow: var(--shadow);
-}
-
-.text-gradient {
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.hero-stats {
-  display: flex;
-  justify-content: center;
-  gap: 28px;
-  flex-wrap: wrap;
-}
-
-.hero-stat {
-  display: flex;
-  flex-direction: column;
-}
-
-.hero-stat strong {
-  font-size: 1.6rem;
-  font-weight: 800;
-  color: var(--primary);
-}
-
-.hero-stat span {
-  font-size: 0.82rem;
-  color: var(--text-muted);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-}
-
 .hero-buttons {
   display: flex;
   justify-content: center;
   gap: 16px;
   flex-wrap: wrap;
-  margin-top: 36px;
-}
-
-@media (max-width: 700px) {
-  .hero-strip {
-    flex-direction: column;
-    text-align: center;
-  }
+  margin-top: 28px;
 }
 
 .form-inline {
@@ -345,32 +293,91 @@ body {
   gap: 32px;
 }
 
+.demo-grid > * {
+  min-width: 0;
+}
+
 @media (max-width: 850px) {
   .demo-grid {
     grid-template-columns: 1fr;
   }
 }
 
+.demo-panel-title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.config-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 480px) {
+  .config-row {
+    grid-template-columns: 1fr;
+  }
+}
+
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .form-group label {
   display: block;
   font-weight: 600;
-  margin-bottom: 8px;
-  font-size: 0.9rem;
+  margin-bottom: 6px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 .form-control, select, textarea {
   width: 100%;
-  padding: 10px 14px;
+  padding: 9px 12px;
   border-radius: 8px;
   border: 1px solid var(--border);
   background-color: var(--light);
   color: var(--text-main);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-family: inherit;
+}
+
+.preset-row {
+  margin-top: 8px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.preset-row .btn {
+  padding: 4px 10px;
+  font-size: 0.75rem;
+}
+
+.toggle-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  background: var(--light);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.btn-execute {
+  width: 100%;
+}
+
+.btn-copy {
+  padding: 4px 10px;
+  font-size: 0.8rem;
 }
 
 .range-slider {
@@ -400,13 +407,17 @@ body {
   background: var(--code-bg);
   color: var(--code-text);
   border-radius: 8px;
-  padding: 20px;
-  min-height: 220px;
+  padding: 16px;
+  height: 160px;
   font-family: monospace;
+  font-size: 0.85rem;
   white-space: pre-wrap;
   position: relative;
   overflow-y: auto;
-  max-height: 380px;
+}
+
+.snippet-block {
+  margin-top: 20px;
 }
 
 .code-snippet-box {
@@ -414,9 +425,11 @@ body {
   color: var(--code-text);
   padding: 16px;
   border-radius: 8px;
-  overflow-x: auto;
+  height: 160px;
+  overflow: auto;
   font-family: 'Fira Code', 'Courier New', monospace;
-  font-size: 0.88rem;
+  font-size: 0.82rem;
+  white-space: pre-wrap;
 }
 
 .tab-nav {
@@ -424,6 +437,12 @@ body {
   gap: 12px;
   margin-bottom: 16px;
   border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.tab-btn {
+  flex-shrink: 0;
 }
 
 .tab-btn {

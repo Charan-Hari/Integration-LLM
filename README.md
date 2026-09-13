@@ -4,7 +4,7 @@
 
 [![CI Pipeline](https://github.com/Charan-Hari/Integration-LLM/actions/workflows/ci.yml/badge.svg)](https://github.com/Charan-Hari/Integration-LLM/actions)
 [![Deploy Docs](https://github.com/Charan-Hari/Integration-LLM/actions/workflows/deploy-docs.yml/badge.svg)](https://github.com/Charan-Hari/Integration-LLM/actions)
-[![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live%20Website-success)](https://charan-hari.github.io/Integration-LLM/)
 
 `Integration-LLM` is an enterprise-grade TypeScript library and interactive portal designed for provider-agnostic integration across **Azure OpenAI**, **AWS Bedrock**, **Google Vertex AI**, **Ollama**, **OpenAI Direct**, and **Anthropic Claude**.
@@ -203,4 +203,4 @@ npm run demo
 
 ## 📄 License
 
-This project is licensed under the **ISC License**.
+This project is licensed under the **MIT License** — free and open-source for personal and commercial use. See [LICENSE](LICENSE) for details.
