@@ -1,7 +1,7 @@
 import type { LLMFactory } from '../../core/llm-factory.js';
 import type { LLMStrategy } from '../../core/llm-strategy.js';
 import { GoogleGenerativeClient } from '../sdk-clients.js';
-import { GoogleVertexStrategy } from './google-strategy.js';
+import { GoogleStrategy } from './google-strategy.js';
 
 const SUPPORTED_MODELS = Object.freeze([
   'gemini-pro',
@@ -14,9 +14,9 @@ export class GoogleFactory implements LLMFactory {
 
   createClient(model: string): LLMStrategy {
     if (!SUPPORTED_MODELS.includes(model)) {
-      throw new Error(`Google model "${model}" is not supported.`);
+      throw new Error(`Google model "${model}" is not available.`);
     }
-    return new GoogleVertexStrategy(this.client, model);
+    return new GoogleStrategy(this.client, model);
   }
 
   listAvailableModels(): readonly string[] {

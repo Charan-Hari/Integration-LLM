@@ -1,5 +1,5 @@
 import { GoogleGenerativeClient } from '../sdk-clients.js';
-import { GoogleVertexStrategy } from './google-strategy.js';
+import { GoogleStrategy } from './google-strategy.js';
 const SUPPORTED_MODELS = Object.freeze([
     'gemini-pro',
     'gemini-1.0-pro',
@@ -12,9 +12,9 @@ export class GoogleFactory {
     }
     createClient(model) {
         if (!SUPPORTED_MODELS.includes(model)) {
-            throw new Error(`Google model "${model}" is not supported.`);
+            throw new Error(`Google model "${model}" is not available.`);
         }
-        return new GoogleVertexStrategy(this.client, model);
+        return new GoogleStrategy(this.client, model);
     }
     listAvailableModels() {
         return SUPPORTED_MODELS;

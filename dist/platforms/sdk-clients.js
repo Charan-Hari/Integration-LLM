@@ -38,3 +38,23 @@ export class OllamaClient {
         };
     }
 }
+export class OpenAIClient {
+    async createCompletion(request) {
+        return {
+            model: request.model,
+            text: `OpenAI response to: ${request.prompt}`,
+            promptTokens: 14,
+            completionTokens: 22
+        };
+    }
+}
+export class AnthropicClient {
+    async completeMessage(request) {
+        return {
+            model: request.model,
+            completion: `Anthropic Claude response to: ${request.prompt}`,
+            inputTokens: 15,
+            outputTokens: 25
+        };
+    }
+}

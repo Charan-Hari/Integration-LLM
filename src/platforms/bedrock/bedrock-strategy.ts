@@ -1,6 +1,6 @@
 import type { ChatOptions, ChatResponse, StreamingChunk } from '../../core/chat-types.js';
 import type { LLMStrategy } from '../../core/llm-strategy.js';
-import { BedrockSDKClient } from '../sdk-clients.js';
+import type { BedrockSDKClient } from '../sdk-clients.js';
 
 export class BedrockStrategy implements LLMStrategy {
   constructor(
@@ -8,35 +8,34 @@ export class BedrockStrategy implements LLMStrategy {
     private readonly modelId: string
   ) {}
 
-  async sendMessage(prompt: string, options: ChatOptions = {}): Promise<ChatResponse> {
-    const response = await this.client.invokeModel({
+  async sendMessage(prompt: string, options?: ChatOptions): Promise<ChatResponse> {
+    const raw = await this.client.invokeModel({
       modelId: this.modelId,
       prompt,
-      temperature: options.temperature,
-      maxTokens: options.maxTokens
+      temperature: options?.temperature,
+      maxTokens: options?.maxTokens
     });
 
     return {
-      model: response.modelId,
-      content: response.outputText,
+      model: raw.modelId,
+      content: raw.outputText,
       usage: {
-        promptTokens: response.promptTokens,
-        completionTokens: response.completionTokens,
-        totalTokens: response.promptTokens + response.completionTokens
+        promptTokens: raw.promptTokens,
+        completionTokens: raw.completionTokens,
+        totalTokens: raw.promptTokens + raw.completionTokens
       },
-      additionalData: response.additionalMetadata
+      additionalData: raw.additionalMetadata
     };
   }
 
-  async *streamMessage(prompt: string, options: ChatOptions = {}): AsyncIterable<StreamingChunk> {
-    const result = await this.sendMessage(prompt, options);
-    const words = result.content.split(' ');
-
-    for (const [index, word] of words.entries()) {
+  async *streamMessage(prompt: string, _options?: ChatOptions): AsyncIterable<StreamingChunk> {
+    const response = await this.sendMessage(prompt, _options);
+    const words = response.content.split(' ');
+    for (let i = 0; i < words.length; i++) {
       yield {
-        model: result.model,
-        contentFragment: word + (index < words.length - 1 ? ' ' : ''),
-        isLast: index === words.length - 1
+        model: this.modelId,
+        contentFragment: words[i] + (i === words.length - 1 ? '' : ' '),
+        isLast: i === words.length - 1
       };
     }
   }

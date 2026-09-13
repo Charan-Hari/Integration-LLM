@@ -4,9 +4,10 @@ import { BedrockSDKClient } from '../sdk-clients.js';
 import { BedrockStrategy } from './bedrock-strategy.js';
 
 const SUPPORTED_MODELS = Object.freeze([
-  'anthropic.claude-v2',
-  'mistral.large',
-  'meta.llama2-70b'
+  'llama3.2',
+  'gemma3',
+  'qwen3',
+  'anthropic.claude-v2'
 ]);
 
 export class BedrockFactory implements LLMFactory {

@@ -1,313 +1,156 @@
 # Integration-LLM
 
-A TypeScript library demonstrating a **provider-agnostic LLM integration layer** using enterprise design patterns. This project enables seamless switching between multiple LLM providers (Azure OpenAI, AWS Bedrock, Google Vertex AI, Ollama) with a unified interface.
+> **Unified, Provider-Agnostic LLM Integration Framework for TypeScript**
 
-## 🎯 Overview
+[![CI Pipeline](https://github.com/Charan-Hari/Integration-LLM/actions/workflows/ci.yml/badge.svg)](https://github.com/Charan-Hari/Integration-LLM/actions)
+[![Deploy Docs](https://github.com/Charan-Hari/Integration-LLM/actions/workflows/deploy-docs.yml/badge.svg)](https://github.com/Charan-Hari/Integration-LLM/actions)
+[![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](LICENSE)
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live%20Website-success)](https://charan-hari.github.io/Integration-LLM/)
 
-Integration-LLM provides a clean abstraction layer for interacting with Large Language Models across different cloud providers. The architecture demonstrates 3 key design patterns:
+`Integration-LLM` is an enterprise-grade TypeScript library and interactive portal designed for provider-agnostic integration across **Azure OpenAI**, **AWS Bedrock**, **Google Vertex AI**, **Ollama**, **OpenAI Direct**, and **Anthropic Claude**.
 
-- **Strategy Pattern**: Unified `LLMStrategy` interface enables runtime provider switching
-- **Abstract Factory Pattern**: Each platform has a dedicated factory for creating strategy instances
-- **Adapter Pattern**: Platform-specific implementations adapt vendor APIs to a common response format
+Built with proven design patterns (**Strategy**, **Abstract Factory**, **Adapter**, **Facade**, and **Builder**), `Integration-LLM` empowers applications to switch LLM backends dynamically at runtime without changing client code.
 
-## 📊 Architecture Diagram
+---
 
-```mermaid
-graph TB
-    Client["🔹 Client Application"]
-    
-    ChatService["ChatService<br/>(Facade)"]
-    Registry["LLM Registry<br/>(Factory Lookup)"]
-    Builder["LLMClientBuilder<br/>(Fluent API)"]
-    
-    Client -->|configure & send| ChatService
-    Client -->|build client| Builder
-    ChatService -->|resolve factory| Registry
-    Builder -->|resolve factory| Registry
-    
-    subgraph Factories["Factories (Abstract Factory)"]
-        AzureFactory["Azure Factory"]
-        BedrockFactory["Bedrock Factory"]
-        GoogleFactory["Google Factory"]
-        OllamaFactory["Ollama Factory"]
-    end
-    
-    subgraph Strategies["Strategies (Strategy Pattern)"]
-        AzureStrategy["Azure Strategy"]
-        BedrockStrategy["Bedrock Strategy"]
-        GoogleStrategy["Google Strategy"]
-        OllamaStrategy["Ollama Strategy"]
-    end
-    
-    subgraph SDKClients["SDK Clients (Adapter Pattern)"]
-        AzureClient["Azure SDK Client"]
-        BedrockClient["Bedrock SDK Client"]
-        GoogleClient["Google SDK Client"]
-        OllamaClient["Ollama HTTP Client"]
-    end
-    
-    subgraph External["External Services"]
-        AzureAPI["Azure OpenAI API"]
-        BedrockAPI["AWS Bedrock API"]
-        GoogleAPI["Google Vertex AI API"]
-        OllamaAPI["Ollama Local/Remote"]
-    end
-    
-    Registry -->|creates| AzureFactory
-    Registry -->|creates| BedrockFactory
-    Registry -->|creates| GoogleFactory
-    Registry -->|creates| OllamaFactory
-    
-    AzureFactory -->|instantiates| AzureStrategy
-    BedrockFactory -->|instantiates| BedrockStrategy
-    GoogleFactory -->|instantiates| GoogleStrategy
-    OllamaFactory -->|instantiates| OllamaStrategy
-    
-    AzureStrategy -->|uses| AzureClient
-    BedrockStrategy -->|uses| BedrockClient
-    GoogleStrategy -->|uses| GoogleClient
-    OllamaStrategy -->|uses| OllamaClient
-    
-    AzureClient -->|calls| AzureAPI
-    BedrockClient -->|calls| BedrockAPI
-    GoogleClient -->|calls| GoogleAPI
-    OllamaClient -->|calls| OllamaAPI
-    
-    style Client fill:#e1f5ff
-    style ChatService fill:#fff3e0
-    style Registry fill:#fff3e0
-    style Builder fill:#fff3e0
-    style Factories fill:#f3e5f5
-    style Strategies fill:#e8f5e9
-    style SDKClients fill:#fce4ec
-    style External fill:#eeeeee
-```
+## 🌟 Key Features
 
-## ⚡ Current Status
+- **Multi-Cloud & Local Provider Support**: Seamless integration for Azure OpenAI, AWS Bedrock, Google Vertex AI, Ollama (Local/Self-hosted), OpenAI Direct, and Anthropic Claude.
+- **Runtime Switching**: Change LLM strategy dynamically at runtime without redeployment or code refactoring.
+- **Resilient Multi-Provider Failover**: Includes `FallbackChatService` to automatically fall back to secondary LLMs if the primary fails.
+- **Token Usage Estimation**: `TokenCalculator` utility for prompt/completion token tracking across providers.
+- **Interactive Documentation & Playground**: Hosted live on [GitHub Pages](https://charan-hari.github.io/Integration-LLM/).
+- **Fully Type-Safe**: Written in strict TypeScript with comprehensive Vitest test coverage and automated GitHub Actions CI.
 
-> **Note**: The provider clients are typed mock implementations. They return predictable sample responses and do **not** make live requests to external APIs. This allows for development and testing without credentials.
+---
 
-## 🚀 Supported Platforms
+## 🌐 Live GitHub Pages Documentation & Interactive Playground
 
-| Platform | Example Models | Status |
-|----------|---|---|
-| **AWS Bedrock** | `anthropic.claude-v2`, `mistral.large`, `meta.llama2-70b` | ✅ Mock |
-| **Azure OpenAI** | `gpt-4o-mini`, `gpt-35-turbo`, `gpt-4o` | ✅ Mock |
-| **Google Vertex AI** | `gemini-pro`, `gemini-1.0-pro`, `text-unicorn-latest` | ✅ Mock |
-| **Ollama** | `llama3.2`, `gemma3`, `qwen3` | ✅ Mock |
+Visit the live documentation and interactive playground at:
+👉 **[https://charan-hari.github.io/Integration-LLM/](https://charan-hari.github.io/Integration-LLM/)**
 
-## 📋 Requirements
+Features of the online portal:
+- Live Interactive LLM Playground with model selection, temperature control, system prompt testing, and real-time execution metrics.
+- Code generator exporting ready-to-use TypeScript, CommonJS, Builder pattern, and Resilient Fallback snippets.
+- Interactive API Reference and Architecture Diagram viewer.
 
-- Node.js 18 or later
-- npm 9 or later
+---
 
-## 📦 Installation & Setup
+## 🚀 Quick Start
+
+### 1. Installation
 
 ```bash
-# Install dependencies
-npm install
+npm install integration-llm
+```
 
-# Build TypeScript
+### 2. Basic Usage (`ChatService`)
+
+```typescript
+import { ChatService, registerDefaultFactories } from 'integration-llm';
+
+// Register built-in factories (Azure, Bedrock, Google, Ollama, OpenAI, Anthropic)
+registerDefaultFactories();
+
+const chatService = new ChatService();
+
+// Configure provider platform & model at runtime
+chatService.configure({
+  platform: 'ollama', // Options: 'azure', 'bedrock', 'google', 'ollama', 'openai', 'anthropic'
+  model: 'llama3.2'
+});
+
+const response = await chatService.send('Explain the Strategy Pattern in TypeScript.', {
+  temperature: 0.7,
+  maxTokens: 500
+});
+
+console.log('Model:', response.model);
+console.log('Response:', response.content);
+console.log('Prompt Tokens:', response.usage.promptTokens);
+console.log('Completion Tokens:', response.usage.completionTokens);
+```
+
+### 3. Builder Pattern (`LLMClientBuilder`)
+
+```typescript
+import { LLMClientBuilder, registerDefaultFactories } from 'integration-llm';
+
+registerDefaultFactories();
+
+const response = await new LLMClientBuilder()
+  .setPlatform('azure')
+  .setModel('gpt-4o')
+  .send('Explain the Adapter pattern.', { temperature: 0.5 });
+```
+
+### 4. Multi-Provider Resilient Failover (`FallbackChatService`)
+
+```typescript
+import { FallbackChatService, LLMClientBuilder, registerDefaultFactories } from 'integration-llm';
+
+registerDefaultFactories();
+
+// Primary: Azure OpenAI | Secondary: Ollama Local
+const primary = new LLMClientBuilder().setPlatform('azure').setModel('gpt-4o').build();
+const secondary = new LLMClientBuilder().setPlatform('ollama').setModel('llama3.2').build();
+
+const resilientService = new FallbackChatService([primary, secondary]);
+const response = await resilientService.send('Mission-critical prompt');
+```
+
+---
+
+## 🛠️ Design Patterns Architecture
+
+```
+Client App
+   │
+   ▼
+ChatService (Facade) ──► LLMRegistry (Lookup)
+   │                           │
+   ▼                           ▼
+LLMStrategy (Interface) ◄── LLMFactory (Abstract Factory)
+   │
+   ▼
+Platform Strategy (Adapter) ──► SDK Client ──► Vendor API
+```
+
+1. **Strategy Pattern**: `LLMStrategy` interface defines standardized message sending & streaming operations.
+2. **Abstract Factory Pattern**: Platform factories (`AzureFactory`, `BedrockFactory`, etc.) isolate client instantiation.
+3. **Adapter Pattern**: Vendor response formats are normalized into a single `ChatResponse` contract.
+4. **Facade Pattern**: `ChatService` simplifies provider lookup and request dispatching.
+
+---
+
+## 🧪 Testing & Building
+
+Run unit tests with Vitest:
+
+```bash
+npm run test
+```
+
+Build TypeScript definitions and bundle:
+
+```bash
 npm run build
-
-# Run tests
-npm test
-
-# Run the demo
-npm run demo
-
-# Run tests in watch mode
-npm run test:watch
-
-# Lint code
-npm lint
 ```
 
-## 🔧 Usage Examples
-
-### Basic Usage
-
-```typescript
-import {
-  ChatService,
-  registerDefaultFactories
-} from './src/index.js';
-
-// Register all default platform factories
-registerDefaultFactories();
-
-// Create and configure the service
-const chatService = new ChatService();
-
-chatService.configure({
-  platform: 'azure',
-  model: 'gpt-4o-mini'
-});
-
-// Send a message
-const response = await chatService.send('Explain the adapter pattern.');
-
-console.log(response.content);
-console.log(response.usage.totalTokens);
-```
-
-### Using the Fluent Builder
-
-```typescript
-import {
-  LLMClientBuilder,
-  registerDefaultFactories
-} from './src/index.js';
-
-registerDefaultFactories();
-
-const response = await LLMClientBuilder
-  .create()
-  .withPlatform('google')
-  .withModel('gemini-pro')
-  .send('What is machine learning?');
-
-console.log(response.content);
-```
-
-### Streaming Messages
-
-```typescript
-const chatService = new ChatService();
-chatService.configure({
-  platform: 'bedrock',
-  model: 'anthropic.claude-v2'
-});
-
-// Stream response chunks
-for await (const chunk of chatService.stream('Tell me a story.')) {
-  process.stdout.write(chunk.content);
-}
-```
-
-### Runtime Provider Switching
-
-```typescript
-const chatService = new ChatService();
-
-// Use Azure initially
-chatService.configure({ platform: 'azure', model: 'gpt-4o-mini' });
-let response = await chatService.send('Hello!');
-
-// Switch to Bedrock
-chatService.configure({ platform: 'bedrock', model: 'anthropic.claude-v2' });
-response = await chatService.send('Hello!');
-
-// View current configuration
-console.log(chatService.getCurrentConfiguration());
-```
-
-## 📂 Project Structure
-
-```
-src/
-├── core/                      # Core interfaces & types
-│   ├── chat-types.ts         # ChatOptions, ChatResponse, StreamingChunk
-│   ├── llm-strategy.ts       # LLMStrategy interface (Strategy Pattern)
-│   └── llm-factory.ts        # LLMFactory interface (Abstract Factory)
-│
-├── platforms/                # Platform-specific implementations
-│   ├── factory-resolver.ts   # Factory resolution logic
-│   ├── register.ts           # Factory registration helpers
-│   ├── sdk-clients.ts        # Mock SDK client implementations
-│   ├── azure/                # Azure OpenAI platform
-│   │   ├── azure-factory.ts
-│   │   └── azure-strategy.ts
-│   ├── bedrock/              # AWS Bedrock platform
-│   │   ├── bedrock-factory.ts
-│   │   └── bedrock-strategy.ts
-│   ├── google/               # Google Vertex AI platform
-│   │   ├── google-factory.ts
-│   │   └── google-strategy.ts
-│   └── ollama/               # Ollama platform
-│       ├── ollama-factory.ts
-│       └── ollama-strategy.ts
-│
-├── registry/                 # Factory registry & lookup
-│   └── llm-registry.ts      # Central registry for factories
-│
-├── service/                  # High-level services
-│   ├── chat-service.ts      # Main ChatService facade
-│   ├── chat-service.test.ts # Service tests
-│   └── llm-client-builder.ts # Fluent API builder
-│
-├── demo.ts                   # Demonstration script
-└── index.ts                  # Public API exports
-```
-
-## 🏗️ Design Patterns
-
-### 1. Strategy Pattern
-Each LLM platform implements the `LLMStrategy` interface, allowing the application to switch implementations at runtime without changing client code.
-
-```typescript
-export interface LLMStrategy {
-  sendMessage(prompt: string, options?: ChatOptions): Promise<ChatResponse>;
-  streamMessage(prompt: string, options?: ChatOptions): AsyncIterable<StreamingChunk>;
-}
-```
-
-### 2. Abstract Factory Pattern
-Each platform has a dedicated factory that creates the appropriate strategy instance for a given model.
-
-```typescript
-export interface LLMFactory {
-  createClient(modelId: string): LLMStrategy;
-}
-```
-
-### 3. Adapter Pattern
-Platform-specific implementations adapt vendor-specific APIs and response formats into the unified `ChatResponse` format.
-
-## 🧪 Testing
-
-The project includes comprehensive test coverage using Vitest:
+Run linter:
 
 ```bash
-# Run all tests
-npm test
-
-# Run tests in watch mode
-npm run test:watch
+npm run lint
 ```
 
-Key test file:
-- [src/service/chat-service.test.ts](src/service/chat-service.test.ts) - ChatService unit tests
+Run demo script:
 
-## 🔗 Exports
-
-The public API provides access to:
-
-```typescript
-// Types
-export type { ChatOptions, ChatResponse, StreamingChunk }
-export type { LLMStrategy, LLMFactory }
-
-// Services
-export { ChatService }
-export { LLMClientBuilder }
-export { llmRegistry }
-
-// Initialization
-export { registerDefaultFactories }
+```bash
+npm run demo
 ```
 
-## 🤝 Contributing
-
-Contributions are welcome! Please ensure:
-- All tests pass (`npm test`)
-- Code is linted (`npm run lint`)
-- TypeScript compilation succeeds (`npm run build`)
+---
 
 ## 📄 License
 
-ISC
-
-## 🔗 Repository
-
-[Charan-Hari/Integration-LLM](https://github.com/Charan-Hari/Integration-LLM)
+This project is licensed under the **ISC License**.

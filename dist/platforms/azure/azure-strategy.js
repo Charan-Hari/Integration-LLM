@@ -5,36 +5,34 @@ export class AzureOpenAIStrategy {
         this.client = client;
         this.deploymentId = deploymentId;
     }
-    async sendMessage(prompt, options = {}) {
-        const response = await this.client.createChatCompletion({
+    async sendMessage(prompt, options) {
+        const raw = await this.client.createChatCompletion({
             deploymentId: this.deploymentId,
-            temperature: options.temperature,
-            maxTokens: options.maxTokens,
             messages: [
-                ...(options.systemPrompt
-                    ? [{ role: 'system', content: options.systemPrompt }]
-                    : []),
+                ...(options?.systemPrompt ? [{ role: 'system', content: options.systemPrompt }] : []),
                 { role: 'user', content: prompt }
-            ]
+            ],
+            temperature: options?.temperature,
+            maxTokens: options?.maxTokens
         });
         return {
-            model: response.model,
-            content: response.content,
+            model: raw.model,
+            content: raw.content,
             usage: {
-                promptTokens: response.usage.promptTokens,
-                completionTokens: response.usage.completionTokens,
-                totalTokens: response.usage.promptTokens + response.usage.completionTokens
+                promptTokens: raw.usage.promptTokens,
+                completionTokens: raw.usage.completionTokens,
+                totalTokens: raw.usage.promptTokens + raw.usage.completionTokens
             }
         };
     }
-    async *streamMessage(prompt, options = {}) {
-        const result = await this.sendMessage(prompt, options);
-        const tokens = result.content.split(' ');
-        for (const [index, token] of tokens.entries()) {
+    async *streamMessage(prompt, _options) {
+        const response = await this.sendMessage(prompt, _options);
+        const words = response.content.split(' ');
+        for (let i = 0; i < words.length; i++) {
             yield {
-                model: result.model,
-                contentFragment: token + (index < tokens.length - 1 ? ' ' : ''),
-                isLast: index === tokens.length - 1
+                model: this.deploymentId,
+                contentFragment: words[i] + (i === words.length - 1 ? '' : ' '),
+                isLast: i === words.length - 1
             };
         }
     }

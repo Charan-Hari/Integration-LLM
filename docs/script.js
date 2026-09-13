@@ -1,167 +1,249 @@
-// Mock LLM responses based on platform and model
-const mockResponses = {
-    azure: {
-        'gpt-4o-mini': [
-            'The adapter pattern is a structural design pattern that converts the interface of a class into another interface clients expect. It lets classes work together that couldn\'t otherwise because of incompatible interfaces.',
-            'In this Integration-LLM library, the Adapter pattern is used to convert provider-specific API responses into a unified ChatResponse format.',
-        ],
-        'gpt-35-turbo': [
-            'An adapter pattern acts as a bridge between two incompatible interfaces, allowing them to work together seamlessly.',
-            'Azure OpenAI is being configured. This adapter connects Azure\'s native API to our unified interface.',
-        ],
-        'gpt-4o': [
-            'The adapter pattern solves the problem of incompatible interfaces by providing a wrapper that translates one interface to another.',
-            'Think of it like a power adapter - it allows different plugs to connect to the same outlet.',
-        ]
-    },
-    bedrock: {
-        'llama3.2': [
-            'Llama responding: The adapter pattern enables interoperability between systems with different interfaces without modifying their source code.',
-            'In AWS Bedrock, the adapter translates Bedrock\'s response format into our standardized ChatResponse structure.',
-        ],
-        'gemma3': [
-            'From Gemma: Design patterns like the adapter help us write more maintainable and flexible code.',
-            'The adapter pattern is essential for multi-provider systems like this one.',
-        ],
-        'qwen3': [
-            'Qwen LLM perspective: The adapter pattern allows us to plug in different LLM providers without rewriting the consuming code.',
-            'This is exactly how Integration-LLM works - each provider has an adapter.',
-        ]
-    },
-    google: {
-        'gemini-pro': [
-            'Gemini says: The adapter pattern is crucial for API integration layers. It provides a single interface for multiple backend implementations.',
-            'Google Vertex AI integrates with this library through its own adapter implementation.',
-        ],
-        'gemini-1.0-pro': [
-            'Google\'s perspective: The adapter pattern enables you to switch implementations at runtime, which is perfect for multi-cloud strategies.',
-            'Each LLM platform in this library has its own adapter.',
-        ],
-        'text-unicorn-latest': [
-            'Text Unicorn perspective: Adapter patterns solve the impedance mismatch between different systems.',
-            'This library demonstrates excellent use of adapters for LLM integration.',
-        ]
-    },
-    ollama: {
-        'llama3.2': [
-            'Ollama Llama 3.2: The adapter pattern allows us to create a universal interface for diverse LLM implementations. This is powerful for local and remote model serving.',
-            'Notice how you can run this locally with Ollama or switch to cloud providers - all using the same code!',
-        ],
-        'gemma3': [
-            'Gemma running locally: This design pattern is brilliant for creating flexible, extensible systems.',
-            'The adapter abstracts away provider details, letting you focus on your application logic.',
-        ],
-        'qwen3': [
-            'Qwen running on Ollama: The beauty of the adapter pattern is that it\'s transparent to the client code.',
-            'You send a message, and the adapter handles all the provider-specific translation.',
-        ]
-    }
-};
-
-// Platform model mappings
+// Platform and Model Registry Map
 const platformModels = {
-    azure: ['gpt-4o-mini', 'gpt-35-turbo', 'gpt-4o'],
-    bedrock: ['llama3.2', 'gemma3', 'qwen3'],
-    google: ['gemini-pro', 'gemini-1.0-pro', 'text-unicorn-latest'],
-    ollama: ['llama3.2', 'gemma3', 'qwen3']
+  azure: ['gpt-4o', 'gpt-4o-mini', 'gpt-35-turbo'],
+  bedrock: ['llama3.2', 'gemma3', 'qwen3', 'anthropic.claude-v2'],
+  google: ['gemini-pro', 'gemini-1.0-pro', 'text-unicorn-latest'],
+  ollama: ['llama3.2', 'gemma3', 'qwen3'],
+  openai: ['gpt-4o', 'gpt-4o-mini', 'gpt-4-turbo', 'gpt-3.5-turbo'],
+  anthropic: ['claude-3-5-sonnet', 'claude-3-opus', 'claude-3-haiku']
 };
 
-// Initialize demo
+const mockResponses = {
+  azure: {
+    'gpt-4o': 'The Adapter pattern translates provider-specific vendor payloads into a unified ChatResponse contract.',
+    'gpt-4o-mini': 'Azure OpenAI provides fast, enterprise-grade completions with managed deployments.',
+    'gpt-35-turbo': 'Legacy turbo deployment processing request efficiently.'
+  },
+  bedrock: {
+    'llama3.2': 'AWS Bedrock invocation complete. Output adapted seamlessly via BedrockStrategy.',
+    'gemma3': 'Gemma 3 hosted on Bedrock generated content successfully.',
+    'qwen3': 'Qwen 3 response payload normalized to standard ChatResponse.',
+    'anthropic.claude-v2': 'Claude v2 response parsed and converted via Bedrock SDK Client.'
+  },
+  google: {
+    'gemini-pro': 'Vertex AI Gemini Pro completed request using GoogleGenerativeClient adapter.',
+    'gemini-1.0-pro': 'Google Gemini 1.0 Pro response received.',
+    'text-unicorn-latest': 'Text Unicorn model returned structured completion.'
+  },
+  ollama: {
+    'llama3.2': 'Ollama local node executed Llama 3.2 locally with zero external API fees.',
+    'gemma3': 'Ollama local node executed Gemma 3 model.',
+    'qwen3': 'Ollama local node executed Qwen 3 model.'
+  },
+  openai: {
+    'gpt-4o': 'Direct OpenAI API integration returned high-intelligence completion.',
+    'gpt-4o-mini': 'Direct OpenAI API returned fast mini-model completion.',
+    'gpt-4-turbo': 'Direct OpenAI API returned GPT-4 Turbo completion.',
+    'gpt-3.5-turbo': 'Direct OpenAI API returned GPT-3.5 Turbo completion.'
+  },
+  anthropic: {
+    'claude-3-5-sonnet': 'Direct Anthropic API returned Claude 3.5 Sonnet completion with long-context memory.',
+    'claude-3-opus': 'Direct Anthropic API returned Claude 3 Opus completion.',
+    'claude-3-haiku': 'Direct Anthropic API returned lightning-fast Claude 3 Haiku response.'
+  }
+};
+
 document.addEventListener('DOMContentLoaded', () => {
-    const platformSelect = document.getElementById('platform');
-    const modelSelect = document.getElementById('model');
-    const sendBtn = document.getElementById('sendBtn');
-    const promptInput = document.getElementById('prompt');
-    const responseBox = document.getElementById('responseBox');
-    const codeExample = document.getElementById('codeExample');
+  // Elements
+  const platformSelect = document.getElementById('platform');
+  const modelSelect = document.getElementById('model');
+  const tempInput = document.getElementById('temperature');
+  const tempVal = document.getElementById('tempVal');
+  const maxTokensInput = document.getElementById('maxTokens');
+  const systemPromptInput = document.getElementById('systemPrompt');
+  const promptInput = document.getElementById('prompt');
+  const sendBtn = document.getElementById('sendBtn');
+  const responseBox = document.getElementById('responseBox');
+  const latencyBadge = document.getElementById('latencyBadge');
+  const tokenBadge = document.getElementById('tokenBadge');
+  const themeToggle = document.getElementById('themeToggle');
+  const copyCodeBtn = document.getElementById('copyCodeBtn');
 
-    // Update model options when platform changes
-    platformSelect.addEventListener('change', () => {
-        const platform = platformSelect.value;
-        const models = platformModels[platform] || [];
-        modelSelect.innerHTML = models.map(m => `<option value="${m}">${m}</option>`).join('');
-        updateCodeExample();
+  // Code Tab Switchers
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  let activeLang = 'ts';
+
+  // Theme Toggle
+  if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', nextTheme);
+      themeToggle.textContent = nextTheme === 'dark' ? '☀️ Light' : '🌙 Dark';
     });
+  }
 
-    modelSelect.addEventListener('change', updateCodeExample);
+  // Populate models
+  function populateModels() {
+    if (!platformSelect || !modelSelect) return;
+    const selectedPlatform = platformSelect.value;
+    const models = platformModels[selectedPlatform] || [];
+    modelSelect.innerHTML = models.map(m => `<option value="${m}">${m}</option>`).join('');
+    updateCodeSnippet();
+  }
 
-    // Send message
-    sendBtn.addEventListener('click', () => {
-        const platform = platformSelect.value;
-        const model = modelSelect.value;
-        const prompt = promptInput.value.trim();
+  if (platformSelect) {
+    platformSelect.addEventListener('change', populateModels);
+    modelSelect.addEventListener('change', updateCodeSnippet);
+  }
 
-        if (!prompt) {
-            responseBox.innerHTML = '<p class="placeholder">Please enter a prompt</p>';
-            return;
-        }
-
-        sendMessage(platform, model, prompt);
+  if (tempInput && tempVal) {
+    tempInput.addEventListener('input', () => {
+      tempVal.textContent = tempInput.value;
+      updateCodeSnippet();
     });
+  }
 
-    // Allow sending with Enter key
-    promptInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter' && e.ctrlKey) {
-            sendBtn.click();
-        }
+  if (maxTokensInput) maxTokensInput.addEventListener('input', updateCodeSnippet);
+  if (systemPromptInput) systemPromptInput.addEventListener('input', updateCodeSnippet);
+  if (promptInput) promptInput.addEventListener('input', updateCodeSnippet);
+
+  // Tab Switching for Code Snippets
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeLang = btn.getAttribute('data-lang');
+      updateCodeSnippet();
     });
+  });
 
-    // Send message function
-    function sendMessage(platform, model, prompt) {
-        responseBox.innerHTML = '';
-        responseBox.classList.add('loading');
-        sendBtn.disabled = true;
+  // Code Generator
+  function updateCodeSnippet() {
+    const codeSnippetBox = document.getElementById('codeSnippetBox');
+    if (!codeSnippetBox) return;
 
-        // Simulate network delay
-        setTimeout(() => {
-            const responses = mockResponses[platform]?.[model] || [];
-            const response = responses.length > 0 
-                ? responses[Math.floor(Math.random() * responses.length)]
-                : `Response from ${platform} using ${model} model.`;
+    const platform = platformSelect ? platformSelect.value : 'azure';
+    const model = modelSelect ? modelSelect.value : 'gpt-4o';
+    const temp = tempInput ? tempInput.value : '0.7';
+    const maxTokens = maxTokensInput ? maxTokensInput.value : '500';
+    const sysPrompt = systemPromptInput ? systemPromptInput.value : 'You are a helpful assistant.';
+    const prompt = promptInput ? promptInput.value : 'Explain Strategy Pattern.';
 
-            responseBox.classList.remove('loading');
-            responseBox.innerHTML = `<p>${response}</p>`;
-            sendBtn.disabled = false;
-        }, 1000);
-    }
+    let code = '';
 
-    // Update code example
-    function updateCodeExample() {
-        const platform = platformSelect.value;
-        const model = modelSelect.value;
-        const prompt = promptInput.value || 'Explain the adapter pattern.';
+    if (activeLang === 'ts') {
+      code = `import { ChatService, registerDefaultFactories } from 'integration-llm';
 
-        const code = `import { ChatService, registerDefaultFactories } from 'integration-llm';
-
+// Register built-in factories (Azure, Bedrock, Google, Ollama, OpenAI, Anthropic)
 registerDefaultFactories();
 
 const chatService = new ChatService();
+
+// Configure provider and model dynamically at runtime
 chatService.configure({
   platform: '${platform}',
   model: '${model}'
 });
 
-const response = await chatService.send('${prompt}');
+const response = await chatService.send('${prompt}', {
+  temperature: ${temp},
+  maxTokens: ${maxTokens},
+  systemPrompt: '${sysPrompt}'
+});
+
+console.log('Model:', response.model);
+console.log('Content:', response.content);
+console.log('Token Usage:', response.usage);`;
+    } else if (activeLang === 'js') {
+      code = `const { ChatService, registerDefaultFactories } = require('integration-llm');
+
+registerDefaultFactories();
+
+const chatService = new ChatService();
+chatService.configure({ platform: '${platform}', model: '${model}' });
+
+chatService.send('${prompt}', { temperature: ${temp} })
+  .then(res => console.log(res.content));`;
+    } else if (activeLang === 'builder') {
+      code = `import { LLMClientBuilder, registerDefaultFactories } from 'integration-llm';
+
+registerDefaultFactories();
+
+const response = await new LLMClientBuilder()
+  .setPlatform('${platform}')
+  .setModel('${model}')
+  .send('${prompt}', { temperature: ${temp} });
 
 console.log(response.content);`;
+    } else if (activeLang === 'fallback') {
+      code = `import { FallbackChatService, LLMClientBuilder, registerDefaultFactories } from 'integration-llm';
 
-        codeExample.textContent = code;
+registerDefaultFactories();
+
+// Primary: ${platform}, Secondary: Ollama Fallback
+const primary = new LLMClientBuilder().setPlatform('${platform}').setModel('${model}').build();
+const fallback = new LLMClientBuilder().setPlatform('ollama').setModel('llama3.2').build();
+
+const resilientService = new FallbackChatService([primary, fallback]);
+const response = await resilientService.send('${prompt}');
+
+console.log('Resilient Response:', response.content);`;
     }
 
-    // Initial setup
-    updateCodeExample();
+    codeSnippetBox.textContent = code;
+  }
 
-    // Smooth scrolling
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', (e) => {
-            const href = anchor.getAttribute('href');
-            if (href === '#home') return; // Skip home link
-
-            e.preventDefault();
-            const target = document.querySelector(href);
-            if (target) {
-                target.scrollIntoView({ behavior: 'smooth' });
-            }
-        });
+  // Copy Code Button
+  if (copyCodeBtn) {
+    copyCodeBtn.addEventListener('click', () => {
+      const codeSnippetBox = document.getElementById('codeSnippetBox');
+      if (codeSnippetBox) {
+        navigator.clipboard.writeText(codeSnippetBox.textContent);
+        copyCodeBtn.textContent = '✓ Copied!';
+        setTimeout(() => copyCodeBtn.textContent = '📋 Copy Code', 2000);
+      }
     });
+  }
+
+  // Preset Buttons
+  document.querySelectorAll('.preset-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const presetText = btn.getAttribute('data-prompt');
+      if (promptInput && presetText) {
+        promptInput.value = presetText;
+        updateCodeSnippet();
+      }
+    });
+  });
+
+  // Send Execution Simulation
+  if (sendBtn) {
+    sendBtn.addEventListener('click', () => {
+      const platform = platformSelect ? platformSelect.value : 'azure';
+      const model = modelSelect ? modelSelect.value : 'gpt-4o';
+      const prompt = promptInput ? promptInput.value.trim() : '';
+
+      if (!prompt) {
+        responseBox.textContent = 'Please enter a valid prompt.';
+        return;
+      }
+
+      responseBox.textContent = 'Connecting to provider strategy...\n[1/2] Resolving Abstract Factory for platform: ' + platform + '\n[2/2] Instantiating Strategy adapter...';
+      sendBtn.disabled = true;
+
+      const startTime = performance.now();
+
+      setTimeout(() => {
+        const endTime = performance.now();
+        const duration = Math.round(endTime - startTime);
+
+        const mockText = mockResponses[platform]?.[model] || `Standard completion response for ${platform} (${model}).`;
+        const output = `Provider: ${platform.toUpperCase()}\nModel: ${model}\nStatus: 200 OK\n\n--- Content ---\n${mockText}\n\n[Architecture Note]: Execution switched seamlessly at runtime without recompilation.`;
+
+        responseBox.textContent = output;
+        sendBtn.disabled = false;
+
+        if (latencyBadge) latencyBadge.textContent = `${duration} ms`;
+        if (tokenBadge) {
+          const pTokens = Math.ceil(prompt.length / 4);
+          const cTokens = Math.ceil(mockText.length / 4);
+          tokenBadge.textContent = `${pTokens + cTokens} tokens`;
+        }
+      }, 700);
+    });
+  }
+
+  // Initial call
+  populateModels();
 });

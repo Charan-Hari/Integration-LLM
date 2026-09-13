@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,207 +8,172 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='75' font-weight='bold' fill='%234F46E5'>∞</text></svg>">
 </head>
 <body>
+    <!-- Navbar -->
     <nav class="navbar">
         <div class="container">
-            <div class="logo">
-                <span class="logo-text">∞ Integration-LLM</span>
-            </div>
+            <a href="index.html" class="logo-text">
+                <span>∞</span> Integration-LLM
+            </a>
             <ul class="nav-links">
                 <li><a href="#home">Home</a></li>
                 <li><a href="#features">Features</a></li>
+                <li><a href="#demo">Playground</a></li>
                 <li><a href="#architecture">Architecture</a></li>
-                <li><a href="#demo">Demo</a></li>
-                <li><a href="#docs">Docs</a></li>
-                <li><a href="https://github.com/Charan-Hari/Integration-LLM" target="_blank" class="btn-github">GitHub</a></li>
+                <li><a href="docs.html">Documentation</a></li>
+                <li><button id="themeToggle" class="theme-toggle-btn">🌙 Dark</button></li>
+                <li><a href="https://github.com/Charan-Hari/Integration-LLM" target="_blank" class="btn btn-primary" style="padding: 6px 14px; font-size: 0.85rem;">GitHub Repo</a></li>
             </ul>
         </div>
     </nav>
 
+    <!-- Hero Section -->
     <section id="home" class="hero">
         <div class="container">
-            <div class="hero-content">
-                <h1>Unified LLM Integration</h1>
-                <p>A TypeScript library for seamless provider-agnostic LLM integration with support for Azure, AWS, Google, and Ollama</p>
-                <div class="hero-buttons">
-                    <a href="#demo" class="btn btn-primary">Try Demo</a>
-                    <a href="#docs" class="btn btn-secondary">Documentation</a>
-                    <a href="https://github.com/Charan-Hari/Integration-LLM" target="_blank" class="btn btn-outline">View on GitHub</a>
-                </div>
-            </div>
-            <div class="hero-image">
-                <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:#4F46E5;stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:#7C3AED;stop-opacity:1" />
-                        </linearGradient>
-                    </defs>
-                    <circle cx="200" cy="150" r="100" fill="url(#grad1)" opacity="0.2"/>
-                    <circle cx="200" cy="150" r="80" fill="none" stroke="url(#grad1)" stroke-width="2" opacity="0.5"/>
-                    <circle cx="200" cy="150" r="60" fill="none" stroke="url(#grad1)" stroke-width="2" opacity="0.7"/>
-                    <text x="200" y="160" text-anchor="middle" font-size="40" font-weight="bold" fill="#4F46E5">∞</text>
-                </svg>
+            <h1>Unified Multi-Provider LLM Integration</h1>
+            <p>A high-performance TypeScript framework for seamless, provider-agnostic LLM integration supporting Azure OpenAI, AWS Bedrock, Google Vertex AI, Ollama, OpenAI, and Anthropic Claude.</p>
+            <div class="hero-buttons">
+                <a href="#demo" class="btn btn-primary">⚡ Try Interactive Playground</a>
+                <a href="docs.html" class="btn btn-secondary">📖 API Documentation</a>
+                <a href="https://github.com/Charan-Hari/Integration-LLM" target="_blank" class="btn btn-outline">⭐ GitHub Repository</a>
             </div>
         </div>
     </section>
 
+    <!-- Key Features -->
     <section id="features" class="features">
         <div class="container">
-            <h2>Key Features</h2>
+            <h2 class="section-title">Key Architectural Features</h2>
             <div class="features-grid">
                 <div class="feature-card">
                     <div class="feature-icon">🔄</div>
-                    <h3>Multi-Provider Support</h3>
-                    <p>Seamlessly switch between Azure OpenAI, AWS Bedrock, Google Vertex AI, and Ollama without changing your code.</p>
+                    <h3>Multi-Cloud Strategy</h3>
+                    <p>Unified API interface across Azure OpenAI, AWS Bedrock, Google Vertex AI, Ollama, OpenAI, and Anthropic Claude.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">🏗️</div>
                     <h3>Design Patterns</h3>
-                    <p>Built on proven patterns: Strategy, Factory, and Adapter for clean, maintainable code.</p>
+                    <p>Architected using Strategy, Abstract Factory, Facade, Builder, and Adapter design patterns for clean extensibility.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">⚡</div>
-                    <h3>Runtime Switching</h3>
-                    <p>Change LLM providers at runtime. No recompilation or redeployment needed.</p>
+                    <h3>Zero-Downtime Switching</h3>
+                    <p>Swap primary LLM providers at runtime without recompiling code or redeploying microservices.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>Resilient Failover</h3>
+                    <p>Built-in <code>FallbackChatService</code> automatically fails over to backup LLMs if primary endpoints experience downtime.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Token Estimation</h3>
+                    <p>Built-in token heuristic calculator for tracking prompt & completion token consumption across platforms.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">📦</div>
-                    <h3>Type-Safe</h3>
-                    <p>Full TypeScript support with comprehensive type definitions and JSDoc documentation.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🧪</div>
-                    <h3>Well-Tested</h3>
-                    <p>Comprehensive test coverage using Vitest ensuring reliability and correctness.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🚀</div>
-                    <h3>Easy Integration</h3>
-                    <p>Simple, fluent API for easy integration into your existing TypeScript projects.</p>
+                    <h3>Type-Safe TypeScript</h3>
+                    <p>100% strict TypeScript definition files, Vitest test suite, and CI/CD GitHub Actions pipeline included.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="architecture" class="architecture">
+    <!-- Interactive Demo / Playground -->
+    <section id="demo" class="demo-section">
         <div class="container">
-            <h2>Architecture</h2>
-            <div class="architecture-content">
-                <div class="architecture-text">
-                    <h3>Design Patterns at Work</h3>
-                    <p><strong>Strategy Pattern:</strong> Each LLM platform implements a unified LLMStrategy interface, allowing runtime switching without client code changes.</p>
-                    <p><strong>Abstract Factory Pattern:</strong> Dedicated factories create strategy instances for each platform, decoupling creation from usage.</p>
-                    <p><strong>Adapter Pattern:</strong> Platform-specific implementations adapt vendor APIs into a unified ChatResponse format.</p>
-                    <div class="platform-list">
-                        <h4>Supported Platforms:</h4>
-                        <ul>
-                            <li>🔷 <strong>Azure OpenAI</strong> - gpt-4o, gpt-4o-mini, gpt-35-turbo</li>
-                            <li>🔶 <strong>AWS Bedrock</strong> - Claude v2, Mistral, Llama 2</li>
-                            <li>🟠 <strong>Google Vertex AI</strong> - Gemini Pro, Text Unicorn</li>
-                            <li>⚫ <strong>Ollama</strong> - Llama 3.2, Gemma, Qwen</li>
-                        </ul>
+            <h2 class="section-title">Interactive LLM Playground</h2>
+            <div class="demo-card">
+                <div class="demo-grid">
+                    <!-- Config Controls -->
+                    <div class="demo-controls">
+                        <h3 style="margin-bottom: 20px;">Configuration</h3>
+                        <div class="form-group">
+                            <label for="platform">Provider Platform:</label>
+                            <select id="platform">
+                                <option value="azure">Azure OpenAI</option>
+                                <option value="bedrock">AWS Bedrock</option>
+                                <option value="google">Google Vertex AI</option>
+                                <option value="ollama" selected>Ollama (Local / Node)</option>
+                                <option value="openai">OpenAI Direct</option>
+                                <option value="anthropic">Anthropic Claude Direct</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="model">Target Model:</label>
+                            <select id="model">
+                                <!-- Populated dynamically -->
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Temperature (<span id="tempVal">0.7</span>):</label>
+                            <input type="range" id="temperature" min="0" max="1" step="0.1" value="0.7">
+                        </div>
+                        <div class="form-group">
+                            <label for="maxTokens">Max Tokens:</label>
+                            <input type="number" id="maxTokens" value="500" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="systemPrompt">System Prompt:</label>
+                            <input type="text" id="systemPrompt" value="You are a helpful software architecture assistant." class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="prompt">User Prompt:</label>
+                            <textarea id="prompt" rows="3">Explain how the Adapter Pattern standardizes LLM provider responses.</textarea>
+                            <div style="margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap;">
+                                <button class="btn btn-outline preset-btn" data-prompt="Explain Strategy Pattern in TypeScript." style="padding: 4px 8px; font-size: 0.78rem;">Strategy Pattern</button>
+                                <button class="btn btn-outline preset-btn" data-prompt="Show example of multi-provider failover." style="padding: 4px 8px; font-size: 0.78rem;">Failover Strategy</button>
+                            </div>
+                        </div>
+                        <button id="sendBtn" class="btn btn-primary" style="width: 100%;">🚀 Execute Request</button>
                     </div>
-                </div>
-                <div class="architecture-diagram">
-                    <img src="architecture.svg" alt="Architecture Diagram" loading="lazy">
+
+                    <!-- Output & Snippets -->
+                    <div class="demo-output-area">
+                        <div class="response-header">
+                            <h3>Execution Output</h3>
+                            <div>
+                                <span class="badge" id="latencyBadge">0 ms</span>
+                                <span class="badge" id="tokenBadge" style="background-color: var(--secondary);">0 tokens</span>
+                            </div>
+                        </div>
+                        <div id="responseBox" class="response-box">Click "Execute Request" to test runtime execution...</div>
+
+                        <div style="margin-top: 24px;">
+                            <div class="response-header">
+                                <h3>Generated Code Snippet</h3>
+                                <button id="copyCodeBtn" class="btn btn-outline" style="padding: 4px 10px; font-size: 0.8rem;">📋 Copy Code</button>
+                            </div>
+
+                            <div class="tab-nav">
+                                <button class="tab-btn active" data-lang="ts">TypeScript</button>
+                                <button class="tab-btn" data-lang="js">CommonJS</button>
+                                <button class="tab-btn" data-lang="builder">Builder Pattern</button>
+                                <button class="tab-btn" data-lang="fallback">Resilient Fallback</button>
+                            </div>
+
+                            <pre id="codeSnippetBox" class="code-snippet-box"></pre>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="demo" class="demo">
+    <!-- Architecture Section -->
+    <section id="architecture" class="architecture-section">
         <div class="container">
-            <h2>Interactive Demo</h2>
-            <div class="demo-container">
-                <div class="demo-config">
-                    <h3>Configuration</h3>
-                    <div class="form-group">
-                        <label for="platform">Platform:</label>
-                        <select id="platform">
-                            <option value="azure">Azure OpenAI</option>
-                            <option value="bedrock">AWS Bedrock</option>
-                            <option value="google">Google Vertex AI</option>
-                            <option value="ollama" selected>Ollama</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="model">Model:</label>
-                        <select id="model">
-                            <option value="llama3.2">llama3.2</option>
-                            <option value="gemma3">gemma3</option>
-                            <option value="qwen3">qwen3</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="prompt">Prompt:</label>
-                        <textarea id="prompt" placeholder="Enter your prompt here..." rows="4">Explain the adapter pattern in software design.</textarea>
-                    </div>
-                    <button id="sendBtn" class="btn btn-primary" style="width: 100%;">Send Message</button>
-                </div>
-                <div class="demo-output">
-                    <h3>Response</h3>
-                    <div id="responseBox" class="response-box">
-                        <p class="placeholder">Configure and send a message to see the response here...</p>
-                    </div>
-                </div>
-            </div>
-            <div class="demo-code">
-                <h3>Code Example</h3>
-                <pre><code id="codeExample">import { ChatService, registerDefaultFactories } from 'integration-llm';
-
-registerDefaultFactories();
-
-const chatService = new ChatService();
-chatService.configure({
-  platform: 'ollama',
-  model: 'llama3.2'
-});
-
-const response = await chatService.send(
-  'Explain the adapter pattern in software design.'
-);
-
-console.log(response.content);</code></pre>
+            <h2 class="section-title">System Architecture</h2>
+            <div class="arch-svg-container">
+                <img src="architecture.svg" alt="Integration-LLM Architecture Diagram">
             </div>
         </div>
     </section>
 
-    <section id="docs" class="docs">
+    <!-- Footer -->
+    <footer>
         <div class="container">
-            <h2>Documentation</h2>
-            <div class="docs-grid">
-                <div class="doc-card">
-                    <h3>📖 Getting Started</h3>
-                    <p>Learn how to install and set up Integration-LLM in your project.</p>
-                    <a href="docs.html#getting-started" class="card-link">Read Guide →</a>
-                </div>
-                <div class="doc-card">
-                    <h3>💻 API Reference</h3>
-                    <p>Complete API documentation with types and method signatures.</p>
-                    <a href="docs.html#api-reference" class="card-link">View API →</a>
-                </div>
-                <div class="doc-card">
-                    <h3>📚 Examples</h3>
-                    <p>Code examples showing common usage patterns and best practices.</p>
-                    <a href="docs.html#examples" class="card-link">See Examples →</a>
-                </div>
-                <div class="doc-card">
-                    <h3>🎯 Patterns</h3>
-                    <p>Deep dive into the design patterns used in this library.</p>
-                    <a href="docs.html#patterns" class="card-link">Learn Patterns →</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2026 Integration-LLM. Built with TypeScript and designed with ❤️</p>
-            <div class="footer-links">
-                <a href="https://github.com/Charan-Hari/Integration-LLM" target="_blank">GitHub</a>
-                <a href="https://github.com/Charan-Hari/Integration-LLM/issues" target="_blank">Issues</a>
-                <a href="https://github.com/Charan-Hari/Integration-LLM/blob/main/LICENSE" target="_blank">License</a>
-            </div>
+            <p>&copy; 2026 Integration-LLM. Released under the ISC License. | Maintained by <a href="https://github.com/Charan-Hari" target="_blank">Charan Hari</a></p>
+            <p style="margin-top: 8px;">Documentation hosted on <a href="https://charan-hari.github.io/Integration-LLM/" target="_blank">GitHub Pages</a></p>
         </div>
     </footer>
 

@@ -164,7 +164,7 @@
   <text x="640" y="265" class="label" style="text-anchor: start;">Client Layer - Application entry points</text>
 
   <rect x="610" y="290" width="20" height="20" class="box" rx="2"/>
-  <text x="640" y="305" class="label" style="text-anchor: start;">Facade & Services - Main API</text>
+  <text x="640" y="305" class="label" style="text-anchor: start;">Facade &amp; Services - Main API</text>
 
   <rect x="610" y="330" width="20" height="20" class="box-factory" rx="2"/>
   <text x="640" y="345" class="label" style="text-anchor: start;">Factory Pattern - Object creation</text>

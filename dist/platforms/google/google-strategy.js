@@ -1,35 +1,34 @@
-export class GoogleVertexStrategy {
+export class GoogleStrategy {
     client;
-    model;
-    constructor(client, model) {
+    modelName;
+    constructor(client, modelName) {
         this.client = client;
-        this.model = model;
+        this.modelName = modelName;
     }
-    async sendMessage(prompt, options = {}) {
-        const response = await this.client.generateContent({
-            model: this.model,
-            input: prompt,
-            safetySettings: options.metadata
+    async sendMessage(prompt, _options) {
+        const raw = await this.client.generateContent({
+            model: this.modelName,
+            input: prompt
         });
-        const firstCandidate = response.candidates[0];
+        const outputText = raw.candidates[0]?.output ?? '';
         return {
-            model: response.model,
-            content: firstCandidate?.output ?? '',
+            model: raw.model,
+            content: outputText,
             usage: {
-                promptTokens: response.tokenUsage.promptTokens,
-                completionTokens: response.tokenUsage.candidatesTokens,
-                totalTokens: response.tokenUsage.promptTokens + response.tokenUsage.candidatesTokens
+                promptTokens: raw.tokenUsage.promptTokens,
+                completionTokens: raw.tokenUsage.candidatesTokens,
+                totalTokens: raw.tokenUsage.promptTokens + raw.tokenUsage.candidatesTokens
             }
         };
     }
-    async *streamMessage(prompt, options = {}) {
-        const result = await this.sendMessage(prompt, options);
-        const sentences = result.content.split(/(?<=[.!?])\s+/u);
-        for (const [index, sentence] of sentences.entries()) {
+    async *streamMessage(prompt, _options) {
+        const response = await this.sendMessage(prompt, _options);
+        const words = response.content.split(' ');
+        for (let i = 0; i < words.length; i++) {
             yield {
-                model: result.model,
-                contentFragment: sentence,
-                isLast: index === sentences.length - 1
+                model: this.modelName,
+                contentFragment: words[i] + (i === words.length - 1 ? '' : ' '),
+                isLast: i === words.length - 1
             };
         }
     }

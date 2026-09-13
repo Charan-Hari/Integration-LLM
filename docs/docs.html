@@ -1,439 +1,132 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Documentation - Integration-LLM</title>
     <link rel="stylesheet" href="styles.css">
-    <style>
-        .docs-main {
-            padding: 40px 0;
-        }
-        .docs-sidebar {
-            display: none;
-        }
-        .docs-content {
-            max-width: 800px;
-        }
-        .docs-content h2 {
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--primary);
-        }
-        .docs-content h3 {
-            margin-top: 1.5rem;
-            margin-bottom: 0.75rem;
-            color: var(--primary);
-        }
-        .docs-content code {
-            background: var(--light);
-            padding: 2px 6px;
-            border-radius: 3px;
-            color: #D73A49;
-            font-family: 'Courier New', monospace;
-        }
-        .docs-content pre {
-            background: var(--dark);
-            color: #A1E8FF;
-            padding: 1.5rem;
-            border-radius: 0.5rem;
-            overflow-x: auto;
-            margin: 1rem 0;
-            font-size: 0.9rem;
-            line-height: 1.6;
-        }
-        .docs-content pre code {
-            background: none;
-            color: inherit;
-            padding: 0;
-        }
-        .toc {
-            background: var(--light);
-            padding: 1.5rem;
-            border-radius: 0.5rem;
-            margin-bottom: 2rem;
-        }
-        .toc h3 {
-            margin-top: 0;
-        }
-        .toc ul {
-            list-style: none;
-        }
-        .toc li {
-            margin: 0.5rem 0;
-        }
-        .toc a {
-            color: var(--primary);
-            text-decoration: none;
-        }
-        .toc a:hover {
-            text-decoration: underline;
-        }
-        .api-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1rem 0;
-        }
-        .api-table th, .api-table td {
-            padding: 0.75rem;
-            text-align: left;
-            border-bottom: 1px solid var(--border);
-        }
-        .api-table th {
-            background: var(--light);
-            font-weight: 600;
-            color: var(--dark);
-        }
-        .api-table tr:hover {
-            background: var(--light);
-        }
-        .note {
-            background: #FEF3C7;
-            border-left: 4px solid #F59E0B;
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 0.375rem;
-        }
-        .success {
-            background: #D1FAE5;
-            border-left: 4px solid #10B981;
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 0.375rem;
-        }
-        .info {
-            background: #DBEAFE;
-            border-left: 4px solid #3B82F6;
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 0.375rem;
-        }
-    </style>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='75' font-weight='bold' fill='%234F46E5'>∞</text></svg>">
 </head>
 <body>
+    <!-- Navbar -->
     <nav class="navbar">
         <div class="container">
-            <div class="logo">
-                <a href="index.html" style="text-decoration: none;">
-                    <span class="logo-text">∞ Integration-LLM</span>
-                </a>
-            </div>
+            <a href="index.html" class="logo-text">
+                <span>∞</span> Integration-LLM Docs
+            </a>
             <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="index.html#features">Features</a></li>
-                <li><a href="index.html#demo">Demo</a></li>
-                <li><a href="docs.html">Docs</a></li>
-                <li><a href="https://github.com/Charan-Hari/Integration-LLM" target="_blank" class="btn-github">GitHub</a></li>
+                <li><a href="index.html#home">Home</a></li>
+                <li><a href="index.html#demo">Playground</a></li>
+                <li><a href="#getting-started">Getting Started</a></li>
+                <li><a href="#api-reference">API Reference</a></li>
+                <li><a href="#patterns">Design Patterns</a></li>
+                <li><button id="themeToggle" class="theme-toggle-btn">🌙 Dark</button></li>
+                <li><a href="https://github.com/Charan-Hari/Integration-LLM" target="_blank" class="btn btn-primary" style="padding: 6px 14px; font-size: 0.85rem;">GitHub Repo</a></li>
             </ul>
         </div>
     </nav>
 
-    <div class="docs-main">
-        <div class="container docs-content">
-            <div class="toc">
-                <h3>📑 Table of Contents</h3>
-                <ul>
-                    <li><a href="#getting-started">Getting Started</a></li>
-                    <li><a href="#installation">Installation</a></li>
-                    <li><a href="#basic-usage">Basic Usage</a></li>
-                    <li><a href="#api-reference">API Reference</a></li>
-                    <li><a href="#examples">Examples</a></li>
-                    <li><a href="#patterns">Design Patterns</a></li>
-                    <li><a href="#faq">FAQ</a></li>
-                </ul>
-            </div>
+    <div class="container" style="padding: 40px 24px;">
+        <!-- Getting Started -->
+        <section id="getting-started" class="demo-card" style="margin-bottom: 40px;">
+            <h2>📖 Getting Started</h2>
+            <p style="margin: 12px 0 20px 0; color: var(--text-muted);">Integration-LLM allows you to write provider-agnostic code for Azure OpenAI, AWS Bedrock, Google Vertex AI, Ollama, OpenAI, and Anthropic Claude.</p>
+            
+            <h3>Installation</h3>
+            <div class="code-snippet-box" style="margin: 12px 0;">npm install integration-llm</div>
 
-            <h2 id="getting-started">Getting Started</h2>
-            <p>Integration-LLM is a TypeScript library that provides a unified interface for interacting with multiple Large Language Model (LLM) providers. Whether you're using Azure OpenAI, AWS Bedrock, Google Vertex AI, or Ollama, this library simplifies the integration process.</p>
+            <h3>Basic Usage Example</h3>
+            <pre class="code-snippet-box">import { ChatService, registerDefaultFactories } from 'integration-llm';
 
-            <h3>Key Concepts</h3>
-            <p><strong>ChatService:</strong> The main facade for sending messages to LLMs</p>
-            <p><strong>LLMStrategy:</strong> The interface that each platform provider implements</p>
-            <p><strong>LLMFactory:</strong> Creates strategy instances for specific models</p>
-            <p><strong>Registry:</strong> Manages and resolves factories</p>
+// 1. Register default provider factories
+registerDefaultFactories();
 
-            <h2 id="installation">Installation</h2>
-            <pre><code>npm install integration-llm</code></pre>
-
-            <div class="info">
-                <strong>Note:</strong> Currently, this package is available as a development library. For production use, you may need to configure authentication and API keys with your chosen provider.
-            </div>
-
-            <h2 id="basic-usage">Basic Usage</h2>
-
-            <h3>1. Register Platform Factories</h3>
-            <p>First, register the available platform factories:</p>
-            <pre><code>import { registerDefaultFactories } from 'integration-llm';
-
-registerDefaultFactories();</code></pre>
-
-            <h3>2. Create and Configure ChatService</h3>
-            <pre><code>import { ChatService } from 'integration-llm';
-
+// 2. Instantiate ChatService
 const chatService = new ChatService();
 
+// 3. Configure provider and model dynamically at runtime
 chatService.configure({
-  platform: 'azure',
-  model: 'gpt-4o-mini'
-});</code></pre>
+  platform: 'ollama', // Options: 'azure', 'bedrock', 'google', 'ollama', 'openai', 'anthropic'
+  model: 'llama3.2'
+});
 
-            <h3>3. Send Messages</h3>
-            <pre><code>const response = await chatService.send('What is machine learning?');
+// 4. Send request with optional parameters
+const response = await chatService.send('Explain the Strategy Pattern.', {
+  temperature: 0.7,
+  maxTokens: 500
+});
 
-console.log(response.content);
-console.log(response.usage.totalTokens);</code></pre>
+console.log('Model:', response.model);
+console.log('Response Content:', response.content);
+console.log('Prompt Tokens:', response.usage.promptTokens);
+console.log('Completion Tokens:', response.usage.completionTokens);</pre>
+        </section>
 
-            <h3>4. Stream Responses</h3>
-            <p>For streaming responses, use the stream method:</p>
-            <pre><code>for await (const chunk of chatService.stream('Tell me a story')) {
-  process.stdout.write(chunk.content);
-}</code></pre>
+        <!-- API Reference -->
+        <section id="api-reference" class="demo-card" style="margin-bottom: 40px;">
+            <h2>💻 API Reference</h2>
 
-            <h2 id="api-reference">API Reference</h2>
+            <h3 style="margin-top: 24px;">1. ChatService</h3>
+            <p style="color: var(--text-muted);">The main facade class for sending messages and streaming completion chunks.</p>
+            <ul style="margin: 12px 0 12px 24px;">
+                <li><code>configure(config: ProviderConfig): void</code> - Sets active platform & model.</li>
+                <li><code>send(prompt: string, options?: ChatOptions): Promise&lt;ChatResponse&gt;</code> - Sends prompt and returns structured response.</li>
+                <li><code>stream(prompt: string, options?: ChatOptions): AsyncIterable&lt;StreamingChunk&gt;</code> - Yields streaming content fragments.</li>
+            </ul>
 
-            <h3>ChatService</h3>
-            <p>The main service class for sending messages to LLMs.</p>
-            <table class="api-table">
-                <thead>
-                    <tr>
-                        <th>Method</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>configure(config: ProviderConfig)</code></td>
-                        <td>Configure the service with a platform and model</td>
-                    </tr>
-                    <tr>
-                        <td><code>send(prompt: string, options?: ChatOptions)</code></td>
-                        <td>Send a message and get a response</td>
-                    </tr>
-                    <tr>
-                        <td><code>stream(prompt: string, options?: ChatOptions)</code></td>
-                        <td>Stream a response in chunks</td>
-                    </tr>
-                    <tr>
-                        <td><code>getCurrentConfiguration()</code></td>
-                        <td>Get the current configuration</td>
-                    </tr>
-                </tbody>
-            </table>
+            <h3 style="margin-top: 24px;">2. LLMClientBuilder</h3>
+            <p style="color: var(--text-muted);">Fluent builder for constructing and calling LLM strategies step by step.</p>
+            <pre class="code-snippet-box">import { LLMClientBuilder } from 'integration-llm';
 
-            <h3>LLMClientBuilder</h3>
-            <p>A fluent API for building and configuring LLM clients:</p>
-            <pre><code>import { LLMClientBuilder, registerDefaultFactories } from 'integration-llm';
+const response = await new LLMClientBuilder()
+  .setPlatform('azure')
+  .setModel('gpt-4o')
+  .send('Summarize AI strategy.', { temperature: 0.5 });</pre>
 
-registerDefaultFactories();
+            <h3 style="margin-top: 24px;">3. FallbackChatService (Resilience & Failover)</h3>
+            <p style="color: var(--text-muted);">Automatically attempts backup LLMs sequentially if the primary LLM fails or is rate-limited.</p>
+            <pre class="code-snippet-box">import { FallbackChatService, LLMClientBuilder } from 'integration-llm';
 
-const response = await LLMClientBuilder
-  .create()
-  .withPlatform('google')
-  .withModel('gemini-pro')
-  .send('What is TypeScript?');
+const primary = new LLMClientBuilder().setPlatform('azure').setModel('gpt-4o').build();
+const secondary = new LLMClientBuilder().setPlatform('ollama').setModel('llama3.2').build();
 
-console.log(response.content);</code></pre>
+const resilientService = new FallbackChatService([primary, secondary]);
+const response = await resilientService.send('Important prompt');</pre>
 
-            <h3>ProviderConfig</h3>
-            <table class="api-table">
-                <thead>
-                    <tr>
-                        <th>Property</th>
-                        <th>Type</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>platform</code></td>
-                        <td>string</td>
-                        <td>The LLM provider: 'azure', 'bedrock', 'google', 'ollama'</td>
-                    </tr>
-                    <tr>
-                        <td><code>model</code></td>
-                        <td>string</td>
-                        <td>The specific model ID for the platform</td>
-                    </tr>
-                </tbody>
-            </table>
+            <h3 style="margin-top: 24px;">4. TokenCalculator</h3>
+            <p style="color: var(--text-muted);">Utility function to estimate prompt and completion tokens for billing & monitoring.</p>
+            <pre class="code-snippet-box">import { TokenCalculator } from 'integration-llm';
 
-            <h3>ChatResponse</h3>
-            <table class="api-table">
-                <thead>
-                    <tr>
-                        <th>Property</th>
-                        <th>Type</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>content</code></td>
-                        <td>string</td>
-                        <td>The response text from the LLM</td>
-                    </tr>
-                    <tr>
-                        <td><code>usage</code></td>
-                        <td>TokenUsage</td>
-                        <td>Token usage information</td>
-                    </tr>
-                    <tr>
-                        <td><code>metadata</code></td>
-                        <td>object</td>
-                        <td>Provider-specific metadata</td>
-                    </tr>
-                </tbody>
-            </table>
+const tokens = TokenCalculator.estimateTokenCount('Sample text prompt');
+const usage = TokenCalculator.createUsage('User prompt', 'Model completion');</pre>
+        </section>
 
-            <h2 id="examples">Examples</h2>
+        <!-- Design Patterns -->
+        <section id="patterns" class="demo-card">
+            <h2>🎯 Design Patterns Deep Dive</h2>
+            <div style="margin-top: 16px;">
+                <h4>🔹 Strategy Pattern</h4>
+                <p style="color: var(--text-muted); margin-bottom: 12px;">Allows swapping underlying LLM providers (Azure, Bedrock, Google, Ollama, OpenAI, Anthropic) dynamically at runtime via a unified <code>LLMStrategy</code> interface.</p>
 
-            <h3>Example 1: Basic Message</h3>
-            <pre><code>import { ChatService, registerDefaultFactories } from 'integration-llm';
+                <h4>🔹 Abstract Factory Pattern</h4>
+                <p style="color: var(--text-muted); margin-bottom: 12px;">Decouples strategy creation logic from application consumption using dedicated factories (e.g. <code>AzureFactory</code>, <code>OllamaFactory</code>).</p>
 
-registerDefaultFactories();
+                <h4>🔹 Adapter Pattern</h4>
+                <p style="color: var(--text-muted); margin-bottom: 12px;">Normalizes vendor-specific SDK payloads into a standardized <code>ChatResponse</code> object containing <code>content</code> and <code>usage</code> statistics.</p>
 
-async function main() {
-  const chat = new ChatService();
-  chat.configure({
-    platform: 'ollama',
-    model: 'llama3.2'
-  });
-
-  const response = await chat.send('Hello, how are you?');
-  console.log(response.content);
-}
-
-main();</code></pre>
-
-            <h3>Example 2: Runtime Provider Switching</h3>
-            <pre><code>import { ChatService, registerDefaultFactories } from 'integration-llm';
-
-registerDefaultFactories();
-
-async function compareProviders() {
-  const chat = new ChatService();
-  const prompt = 'Explain quantum computing';
-
-  // Try Azure
-  chat.configure({ platform: 'azure', model: 'gpt-4o-mini' });
-  const azureResponse = await chat.send(prompt);
-  console.log('Azure:', azureResponse.content);
-
-  // Switch to Bedrock
-  chat.configure({ platform: 'bedrock', model: 'anthropic.claude-v2' });
-  const bedrockResponse = await chat.send(prompt);
-  console.log('Bedrock:', bedrockResponse.content);
-
-  // Switch to Google
-  chat.configure({ platform: 'google', model: 'gemini-pro' });
-  const googleResponse = await chat.send(prompt);
-  console.log('Google:', googleResponse.content);
-}
-
-compareProviders();</code></pre>
-
-            <h3>Example 3: Streaming Responses</h3>
-            <pre><code>import { ChatService, registerDefaultFactories } from 'integration-llm';
-
-registerDefaultFactories();
-
-async function streamResponse() {
-  const chat = new ChatService();
-  chat.configure({
-    platform: 'bedrock',
-    model: 'anthropic.claude-v2'
-  });
-
-  console.log('Response: ');
-  for await (const chunk of chat.stream('Write a poem about programming')) {
-    process.stdout.write(chunk.content);
-  }
-  console.log('\n');
-}
-
-streamResponse();</code></pre>
-
-            <h3>Example 4: Custom Platform Registration</h3>
-            <pre><code>import { llmRegistry } from 'integration-llm';
-import { CustomPlatformFactory } from './custom-platform-factory';
-
-// Register a custom platform
-llmRegistry.registerFactory('custom', new CustomPlatformFactory());
-
-// Now you can use it
-const chat = new ChatService();
-chat.configure({
-  platform: 'custom',
-  model: 'your-model'
-});</code></pre>
-
-            <h2 id="patterns">Design Patterns</h2>
-
-            <h3>Strategy Pattern</h3>
-            <p>The <code>LLMStrategy</code> interface defines the contract for all LLM providers:</p>
-            <pre><code>export interface LLMStrategy {
-  sendMessage(prompt: string, options?: ChatOptions): Promise<ChatResponse>;
-  streamMessage(prompt: string, options?: ChatOptions): AsyncIterable<StreamingChunk>;
-}</code></pre>
-            <p>Each platform (Azure, Bedrock, Google, Ollama) implements this interface, allowing the application to switch implementations at runtime without changing client code.</p>
-
-            <h3>Abstract Factory Pattern</h3>
-            <p>Each platform has a dedicated factory that creates strategy instances:</p>
-            <pre><code>export interface LLMFactory {
-  createClient(modelId: string): LLMStrategy;
-}</code></pre>
-            <p>This decouples object creation from usage, making it easy to add new platforms or modify creation logic.</p>
-
-            <h3>Adapter Pattern</h3>
-            <p>Each platform's strategy adapts the provider's native API to our unified <code>ChatResponse</code> format:</p>
-            <pre><code>// Example: Azure Adapter
-class AzureStrategy implements LLMStrategy {
-  async sendMessage(prompt: string): Promise<ChatResponse> {
-    const nativeResponse = await this.azureClient.createChatCompletion(...);
-    return {
-      content: nativeResponse.choices[0].message.content,
-      usage: {
-        promptTokens: nativeResponse.usage.prompt_tokens,
-        completionTokens: nativeResponse.usage.completion_tokens,
-        totalTokens: nativeResponse.usage.total_tokens
-      }
-    };
-  }
-}</code></pre>
-
-            <h2 id="faq">Frequently Asked Questions</h2>
-
-            <h3>Q: Do I need API keys to use this library?</h3>
-            <p><strong>A:</strong> The library currently includes mock implementations for development and testing. To use it with real LLMs, you'll need to provide credentials for your chosen provider (Azure API key, AWS credentials, Google Cloud credentials, or Ollama endpoint).</p>
-
-            <h3>Q: Can I use multiple providers in the same application?</h3>
-            <p><strong>A:</strong> Yes! You can create multiple ChatService instances or use a single instance and reconfigure it. This is useful for comparing responses from different providers or implementing fallback strategies.</p>
-
-            <h3>Q: How do I add a new LLM provider?</h3>
-            <p><strong>A:</strong> To add a new provider, implement the <code>LLMStrategy</code> interface and create a corresponding factory. Then register it with the <code>llmRegistry</code>.</p>
-
-            <h3>Q: Is streaming supported?</h3>
-            <p><strong>A:</strong> Yes! The <code>stream()</code> method returns an AsyncIterable that yields streaming chunks.</p>
-
-            <h3>Q: What are the supported models?</h3>
-            <p><strong>A:</strong> See the main documentation for the list of supported models per platform. The library is designed to be extensible, so additional models can be added easily.</p>
-
-            <div class="success">
-                <strong>Ready to get started?</strong> Check out our <a href="index.html#demo">interactive demo</a> or browse the <a href="https://github.com/Charan-Hari/Integration-LLM" target="_blank">GitHub repository</a> for more information.
+                <h4>🔹 Facade Pattern</h4>
+                <p style="color: var(--text-muted);">Simplifies configuration and request dispatching into a single clean <code>ChatService</code> entry point.</p>
             </div>
-        </div>
+        </section>
     </div>
 
-    <footer class="footer">
+    <!-- Footer -->
+    <footer>
         <div class="container">
-            <p>&copy; 2026 Integration-LLM. Built with TypeScript and designed with ❤️</p>
-            <div class="footer-links">
-                <a href="https://github.com/Charan-Hari/Integration-LLM" target="_blank">GitHub</a>
-                <a href="https://github.com/Charan-Hari/Integration-LLM/issues" target="_blank">Issues</a>
-                <a href="https://github.com/Charan-Hari/Integration-LLM/blob/main/LICENSE" target="_blank">License</a>
-            </div>
+            <p>&copy; 2026 Integration-LLM. Released under the ISC License. | Maintained by <a href="https://github.com/Charan-Hari" target="_blank">Charan Hari</a></p>
         </div>
     </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>

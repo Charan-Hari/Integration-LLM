@@ -1,60 +1,24 @@
-import { ChatService } from './chat-service.js';
+import { llmRegistry } from '../registry/llm-registry.js';
 export class LLMClientBuilder {
-    service;
-    config;
-    defaultOptions;
-    constructor(service = new ChatService()) {
-        this.service = service;
-    }
-    withPlatform(platform) {
-        this.config = {
-            ...(this.config ?? { model: '' }),
-            platform
-        };
+    platform;
+    model;
+    setPlatform(platform) {
+        this.platform = platform;
         return this;
     }
-    withModel(model) {
-        this.config = {
-            ...(this.config ?? { platform: '' }),
-            model
-        };
-        return this;
-    }
-    withDefaultOptions(options) {
-        this.defaultOptions = {
-            ...this.defaultOptions,
-            ...options
-        };
+    setModel(model) {
+        this.model = model;
         return this;
     }
     build() {
-        if (!this.config?.platform) {
-            throw new Error('Platform must be specified before building the client.');
+        if (!this.platform || !this.model) {
+            throw new Error('Both platform and model must be specified before building client.');
         }
-        if (!this.config.model) {
-            throw new Error('Model must be specified before building the client.');
-        }
-        this.service.configure(this.config);
-        return new ConfiguredClient(this.service, this.defaultOptions);
+        const factory = llmRegistry.getFactory(this.platform);
+        return factory.createClient(this.model);
     }
-}
-export class ConfiguredClient {
-    service;
-    defaultOptions;
-    constructor(service, defaultOptions) {
-        this.service = service;
-        this.defaultOptions = defaultOptions;
-    }
-    send(prompt, options) {
-        return this.service.send(prompt, {
-            ...this.defaultOptions,
-            ...options
-        });
-    }
-    stream(prompt, options) {
-        return this.service.stream(prompt, {
-            ...this.defaultOptions,
-            ...options
-        });
+    async send(prompt, options) {
+        const client = this.build();
+        return client.sendMessage(prompt, options);
     }
 }

@@ -94,3 +94,53 @@ export class OllamaClient {
     };
   }
 }
+
+export interface OpenAIRequest {
+  readonly model: string;
+  readonly prompt: string;
+  readonly temperature?: number;
+  readonly maxTokens?: number;
+}
+
+export interface OpenAIResponse {
+  readonly model: string;
+  readonly text: string;
+  readonly promptTokens: number;
+  readonly completionTokens: number;
+}
+
+export class OpenAIClient {
+  async createCompletion(request: OpenAIRequest): Promise<OpenAIResponse> {
+    return {
+      model: request.model,
+      text: `OpenAI response to: ${request.prompt}`,
+      promptTokens: 14,
+      completionTokens: 22
+    };
+  }
+}
+
+export interface AnthropicRequest {
+  readonly model: string;
+  readonly prompt: string;
+  readonly temperature?: number;
+  readonly maxTokens?: number;
+}
+
+export interface AnthropicResponse {
+  readonly model: string;
+  readonly completion: string;
+  readonly inputTokens: number;
+  readonly outputTokens: number;
+}
+
+export class AnthropicClient {
+  async completeMessage(request: AnthropicRequest): Promise<AnthropicResponse> {
+    return {
+      model: request.model,
+      completion: `Anthropic Claude response to: ${request.prompt}`,
+      inputTokens: 15,
+      outputTokens: 25
+    };
+  }
+}

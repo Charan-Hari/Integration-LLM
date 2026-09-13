@@ -1,77 +1,31 @@
-import type {
-  ChatOptions,
-  ChatResponse,
-  StreamingChunk
-} from '../core/chat-types.js';
-import {
-  ChatService,
-  type ProviderConfig
-} from './chat-service.js';
+import type { ChatOptions, ChatResponse } from '../core/chat-types.js';
+import type { LLMStrategy } from '../core/llm-strategy.js';
+import { llmRegistry } from '../registry/llm-registry.js';
 
 export class LLMClientBuilder {
-  private config?: ProviderConfig;
-  private defaultOptions?: ChatOptions;
+  private platform?: string;
+  private model?: string;
 
-  constructor(private readonly service = new ChatService()) {}
-
-  withPlatform(platform: string): this {
-    this.config = {
-      ...(this.config ?? { model: '' }),
-      platform
-    };
+  setPlatform(platform: string): this {
+    this.platform = platform;
     return this;
   }
 
-  withModel(model: string): this {
-    this.config = {
-      ...(this.config ?? { platform: '' }),
-      model
-    };
+  setModel(model: string): this {
+    this.model = model;
     return this;
   }
 
-  withDefaultOptions(options: ChatOptions): this {
-    this.defaultOptions = {
-      ...this.defaultOptions,
-      ...options
-    };
-    return this;
-  }
-
-  build(): ConfiguredClient {
-    if (!this.config?.platform) {
-      throw new Error('Platform must be specified before building the client.');
+  build(): LLMStrategy {
+    if (!this.platform || !this.model) {
+      throw new Error('Both platform and model must be specified before building client.');
     }
-
-    if (!this.config.model) {
-      throw new Error('Model must be specified before building the client.');
-    }
-
-    this.service.configure(this.config);
-    return new ConfiguredClient(this.service, this.defaultOptions);
-  }
-}
-
-export class ConfiguredClient {
-  constructor(
-    private readonly service: ChatService,
-    private readonly defaultOptions?: ChatOptions
-  ) {}
-
-  send(prompt: string, options?: ChatOptions): Promise<ChatResponse> {
-    return this.service.send(prompt, {
-      ...this.defaultOptions,
-      ...options
-    });
+    const factory = llmRegistry.getFactory(this.platform);
+    return factory.createClient(this.model);
   }
 
-  stream(
-    prompt: string,
-    options?: ChatOptions
-  ): AsyncIterable<StreamingChunk> {
-    return this.service.stream(prompt, {
-      ...this.defaultOptions,
-      ...options
-    });
+  async send(prompt: string, options?: ChatOptions): Promise<ChatResponse> {
+    const client = this.build();
+    return client.sendMessage(prompt, options);
   }
 }

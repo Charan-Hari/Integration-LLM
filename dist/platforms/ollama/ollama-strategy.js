@@ -1,38 +1,33 @@
 export class OllamaStrategy {
     client;
-    model;
-    constructor(client, model) {
+    modelName;
+    constructor(client, modelName) {
         this.client = client;
-        this.model = model;
+        this.modelName = modelName;
     }
-    async sendMessage(prompt, options = {}) {
-        const response = await this.client.generate({
-            model: this.model,
-            prompt,
-            options: {
-                temperature: options.temperature,
-                num_predict: options.maxTokens,
-                ...options.metadata
-            }
+    async sendMessage(prompt, _options) {
+        const raw = await this.client.generate({
+            model: this.modelName,
+            prompt
         });
         return {
-            model: response.model,
-            content: response.response,
+            model: raw.model,
+            content: raw.response,
             usage: {
-                promptTokens: response.promptEvalCount,
-                completionTokens: response.evalCount,
-                totalTokens: response.promptEvalCount + response.evalCount
+                promptTokens: raw.promptEvalCount,
+                completionTokens: raw.evalCount,
+                totalTokens: raw.promptEvalCount + raw.evalCount
             }
         };
     }
-    async *streamMessage(prompt, options = {}) {
-        const result = await this.sendMessage(prompt, options);
-        const characters = [...result.content];
-        for (const [index, character] of characters.entries()) {
+    async *streamMessage(prompt, _options) {
+        const response = await this.sendMessage(prompt, _options);
+        const words = response.content.split(' ');
+        for (let i = 0; i < words.length; i++) {
             yield {
-                model: result.model,
-                contentFragment: character,
-                isLast: index === characters.length - 1
+                model: this.modelName,
+                contentFragment: words[i] + (i === words.length - 1 ? '' : ' '),
+                isLast: i === words.length - 1
             };
         }
     }

@@ -1,28 +1,42 @@
 {
   "name": "Integration-LLM",
-  "version": "1.0.0",
-  "description": "A TypeScript library for provider-agnostic LLM integration with support for Azure OpenAI, AWS Bedrock, Google Vertex AI, and Ollama using Strategy, Factory, and Adapter design patterns.",
+  "version": "1.1.0",
+  "description": "A TypeScript library for provider-agnostic LLM integration with support for Azure OpenAI, AWS Bedrock, Google Vertex AI, Ollama, OpenAI, and Anthropic Claude using Strategy, Factory, and Adapter design patterns.",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
   "scripts": {
     "test": "vitest run",
+    "test:watch": "vitest",
     "build": "tsc --project tsconfig.json",
     "lint": "eslint . --ext .ts",
-    "test:watch": "vitest",
     "demo": "ts-node --esm src/demo.ts"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Charan-Hari/Integration-LLM.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "llm",
+    "ai",
+    "openai",
+    "azure-openai",
+    "aws-bedrock",
+    "vertex-ai",
+    "ollama",
+    "claude",
+    "anthropic",
+    "typescript",
+    "adapter-pattern",
+    "strategy-pattern",
+    "design-patterns"
+  ],
+  "author": "Charan Hari",
   "license": "ISC",
-  "type": "module",
   "bugs": {
     "url": "https://github.com/Charan-Hari/Integration-LLM/issues"
   },
-  "homepage": "https://github.com/Charan-Hari/Integration-LLM#readme",
-  "types": "dist/index.d.ts",
+  "homepage": "https://charan-hari.github.io/Integration-LLM/",
   "devDependencies": {
     "@types/node": "^26.4.0",
     "@typescript-eslint/eslint-plugin": "^8.68.0",
@@ -31,8 +45,7 @@
     "eslint": "^10.9.1",
     "node-fetch": "^3.3.2",
     "ts-node": "^10.9.2",
-    "typescript": "^6.0.3",
+    "typescript": "^5.0.0",
     "vitest": "^4.1.11"
-  },
-  "tsconfig": null
+  }
 }
