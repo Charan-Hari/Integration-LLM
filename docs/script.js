@@ -179,6 +179,36 @@ const resilientService = new FallbackChatService([primary, fallback]);
 const response = await resilientService.send('${prompt}');
 
 console.log('Resilient Response:', response.content);`;
+    } else if (activeLang === 'retry') {
+      code = `import { RetryChatService, LLMClientBuilder, registerDefaultFactories } from 'integration-llm';
+
+registerDefaultFactories();
+
+const strategy = new LLMClientBuilder().setPlatform('${platform}').setModel('${model}').build();
+
+// Retries with exponential backoff on transient errors (rate limits, timeouts)
+const resilient = new RetryChatService(strategy, {
+  maxAttempts: 3,
+  baseDelayMs: 200,
+  backoffFactor: 2,
+  onRetry: (attempt, err, delayMs) => console.warn(\`Retry #\${attempt} in \${delayMs}ms:\`, err.message)
+});
+
+const response = await resilient.send('${prompt}');
+console.log(response.content);`;
+    } else if (activeLang === 'template') {
+      code = `import { PromptTemplate, ChatService, registerDefaultFactories } from 'integration-llm';
+
+registerDefaultFactories();
+
+const template = PromptTemplate.from('Explain {{topic}} to a {{audience}}.');
+const prompt = template.format({ topic: 'the Adapter pattern', audience: 'junior developer' });
+
+const chatService = new ChatService();
+chatService.configure({ platform: '${platform}', model: '${model}' });
+
+const response = await chatService.send(prompt, { temperature: ${temp} });
+console.log(response.content);`;
     }
 
     codeSnippetBox.textContent = code;
@@ -208,108 +238,78 @@ console.log('Resilient Response:', response.content);`;
   });
 
   // Send Execution Simulation
+  const streamToggle = document.getElementById('streamToggle');
+  const retryToggle = document.getElementById('retryToggle');
+
   if (sendBtn) {
-    sendBtn.addEventListener('click', () => {
+    sendBtn.addEventListener('click', async () => {
       const platform = platformSelect ? platformSelect.value : 'azure';
       const model = modelSelect ? modelSelect.value : 'gpt-4o';
       const prompt = promptInput ? promptInput.value.trim() : '';
+      const doStream = streamToggle ? streamToggle.checked : false;
+      const doRetry = retryToggle ? retryToggle.checked : false;
 
       if (!prompt) {
         responseBox.textContent = 'Please enter a valid prompt.';
         return;
       }
 
-      responseBox.textContent = 'Connecting to provider strategy...\n[1/2] Resolving Abstract Factory for platform: ' + platform + '\n[2/2] Instantiating Strategy adapter...';
       sendBtn.disabled = true;
-
       const startTime = performance.now();
+      const mockText = mockResponses[platform]?.[model] || `Standard completion response for ${platform} (${model}).`;
 
-      setTimeout(() => {
-        const endTime = performance.now();
-        const duration = Math.round(endTime - startTime);
-
-        const mockText = mockResponses[platform]?.[model] || `Standard completion response for ${platform} (${model}).`;
-        const output = `Provider: ${platform.toUpperCase()}\nModel: ${model}\nStatus: 200 OK\n\n--- Content ---\n${mockText}\n\n[Architecture Note]: Execution switched seamlessly at runtime without recompilation.`;
-
-        responseBox.textContent = output;
+      const finish = () => {
+        const duration = Math.round(performance.now() - startTime);
         sendBtn.disabled = false;
-
         if (latencyBadge) latencyBadge.textContent = `${duration} ms`;
         if (tokenBadge) {
           const pTokens = Math.ceil(prompt.length / 4);
           const cTokens = Math.ceil(mockText.length / 4);
           tokenBadge.textContent = `${pTokens + cTokens} tokens`;
         }
-      }, 700);
+      };
+
+      if (doRetry) {
+        responseBox.textContent = 'Connecting to provider strategy...\n[1/2] Resolving Abstract Factory for platform: ' + platform + '\n[2/2] Instantiating Strategy adapter...\n';
+        await sleep(400);
+        responseBox.textContent += '\n⚠️  Attempt 1 failed: Rate limit exceeded (429). Retrying in 200ms via RetryChatService...';
+        await sleep(500);
+        responseBox.textContent += '\n⚠️  Attempt 2 failed: Upstream timeout. Retrying in 400ms...';
+        await sleep(600);
+        responseBox.textContent += `\n✅ Attempt 3 succeeded.\n\nProvider: ${platform.toUpperCase()}\nModel: ${model}\nStatus: 200 OK\n\n--- Content ---\n${mockText}`;
+        finish();
+        return;
+      }
+
+      if (doStream) {
+        responseBox.textContent = `Provider: ${platform.toUpperCase()}\nModel: ${model}\nStatus: 200 OK (streaming)\n\n--- Content ---\n`;
+        const cursor = document.createElement('span');
+        cursor.className = 'stream-cursor';
+        responseBox.appendChild(cursor);
+
+        const words = mockText.split(' ');
+        for (const word of words) {
+          // eslint-disable-next-line no-await-in-loop
+          await sleep(60);
+          cursor.insertAdjacentText('beforebegin', word + ' ');
+        }
+        cursor.remove();
+        responseBox.textContent += `\n\n[Architecture Note]: Streamed via chatService.stream(), yielding StreamingChunk objects.`;
+        finish();
+        return;
+      }
+
+      responseBox.textContent = 'Connecting to provider strategy...\n[1/2] Resolving Abstract Factory for platform: ' + platform + '\n[2/2] Instantiating Strategy adapter...';
+      await sleep(700);
+      responseBox.textContent = `Provider: ${platform.toUpperCase()}\nModel: ${model}\nStatus: 200 OK\n\n--- Content ---\n${mockText}\n\n[Architecture Note]: Execution switched seamlessly at runtime without recompilation.`;
+      finish();
     });
+  }
+
+  function sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   // Initial call
   populateModels();
-
-  // --- Hero Live Terminal Animation (auto-plays, cycles providers) ---
-  const heroTerminal = document.getElementById('heroTerminal');
-  if (heroTerminal) {
-    const demoSequence = [
-      { platform: 'ollama', model: 'llama3.2' },
-      { platform: 'azure', model: 'gpt-4o' },
-      { platform: 'openai', model: 'gpt-4o-mini' },
-      { platform: 'anthropic', model: 'claude-3-5-sonnet' },
-      { platform: 'bedrock', model: 'llama3.2' },
-      { platform: 'google', model: 'gemini-pro' }
-    ];
-
-    let seqIndex = 0;
-
-    function escapeHtml(str) {
-      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    }
-
-    function buildScript(platform, model) {
-      const responseText = (mockResponses[platform] && mockResponses[platform][model])
-        || `Standard completion response for ${platform} (${model}).`;
-
-      return [
-        { text: `import { ChatService, registerDefaultFactories } from 'integration-llm';\n\n`, cls: '' },
-        { text: `registerDefaultFactories();\n`, cls: 'line-keyword' },
-        { text: `const chatService = new ChatService();\n\n`, cls: '' },
-        { text: `chatService.configure({ platform: '${platform}', model: '${model}' });\n\n`, cls: 'line-string' },
-        { text: `const res = await chatService.send('Explain the Adapter pattern.');\n`, cls: '' },
-        { text: `> `, cls: 'line-label' },
-        { text: `${responseText}\n`, cls: 'line-success' }
-      ];
-    }
-
-    async function typeSequence(entries) {
-      heroTerminal.innerHTML = '';
-      for (const entry of entries) {
-        const span = document.createElement('span');
-        if (entry.cls) span.className = entry.cls;
-        heroTerminal.appendChild(span);
-
-        for (let i = 0; i < entry.text.length; i++) {
-          span.textContent += entry.text[i];
-          // eslint-disable-next-line no-await-in-loop
-          await new Promise((resolve) => setTimeout(resolve, 8));
-        }
-      }
-      const cursor = document.createElement('span');
-      cursor.className = 'blinking-cursor';
-      heroTerminal.appendChild(cursor);
-    }
-
-    async function runDemoLoop() {
-      // eslint-disable-next-line no-constant-condition
-      while (true) {
-        const { platform, model } = demoSequence[seqIndex % demoSequence.length];
-        // eslint-disable-next-line no-await-in-loop
-        await typeSequence(buildScript(platform, model));
-        // eslint-disable-next-line no-await-in-loop
-        await new Promise((resolve) => setTimeout(resolve, 2600));
-        seqIndex += 1;
-      }
-    }
-
-    runDemoLoop();
-  }
 });

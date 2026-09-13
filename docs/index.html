@@ -26,81 +26,23 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- Hero Section: real interactive playground shown immediately, above the fold -->
     <section id="home" class="hero">
         <div class="hero-bg-glow"></div>
-        <div class="container hero-grid">
-            <div class="hero-copy">
-                <span class="eyebrow">✨ v1.1 — now with OpenAI &amp; Anthropic Claude</span>
-                <h1>One API. <span class="text-gradient">Every LLM Provider.</span></h1>
-                <p>A high-performance TypeScript framework for seamless, provider-agnostic LLM integration supporting Azure OpenAI, AWS Bedrock, Google Vertex AI, Ollama, OpenAI, and Anthropic Claude.</p>
+        <div class="container">
+            <div class="hero-intro">
+                <span class="eyebrow">✨ v1.2 — now with Retry/Backoff &amp; Prompt Templates</span>
+                <h1>One API. <span class="text-gradient">Every LLM Provider.</span> Try it live.</h1>
+                <p>A high-performance TypeScript framework for seamless, provider-agnostic LLM integration. Pick a provider below and run a real request through the client &mdash; no signup, right here.</p>
                 <div class="hero-stats">
                     <div class="hero-stat"><strong>6</strong><span>Providers</span></div>
                     <div class="hero-stat"><strong>5</strong><span>Design Patterns</span></div>
                     <div class="hero-stat"><strong>100%</strong><span>Type-Safe</span></div>
                 </div>
-                <div class="hero-buttons">
-                    <a href="#demo" class="btn btn-primary">⚡ Try Interactive Playground</a>
-                    <a href="docs.html" class="btn btn-secondary">📖 API Documentation</a>
-                    <a href="https://github.com/Charan-Hari/Integration-LLM" target="_blank" class="btn btn-outline">⭐ Star on GitHub</a>
-                </div>
             </div>
-            <div class="hero-terminal">
-                <div class="terminal-window">
-                    <div class="terminal-header">
-                        <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
-                        <span class="terminal-title">integration-llm — live demo</span>
-                    </div>
-                    <pre id="heroTerminal" class="terminal-body"></pre>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Key Features -->
-    <section id="features" class="features">
-        <div class="container">
-            <h2 class="section-title">Key Architectural Features</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">🔄</div>
-                    <h3>Multi-Cloud Strategy</h3>
-                    <p>Unified API interface across Azure OpenAI, AWS Bedrock, Google Vertex AI, Ollama, OpenAI, and Anthropic Claude.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🏗️</div>
-                    <h3>Design Patterns</h3>
-                    <p>Architected using Strategy, Abstract Factory, Facade, Builder, and Adapter design patterns for clean extensibility.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">⚡</div>
-                    <h3>Zero-Downtime Switching</h3>
-                    <p>Swap primary LLM providers at runtime without recompiling code or redeploying microservices.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🛡️</div>
-                    <h3>Resilient Failover</h3>
-                    <p>Built-in <code>FallbackChatService</code> automatically fails over to backup LLMs if primary endpoints experience downtime.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📊</div>
-                    <h3>Token Estimation</h3>
-                    <p>Built-in token heuristic calculator for tracking prompt & completion token consumption across platforms.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📦</div>
-                    <h3>Type-Safe TypeScript</h3>
-                    <p>100% strict TypeScript definition files, Vitest test suite, and CI/CD GitHub Actions pipeline included.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Interactive Demo / Playground -->
-    <section id="demo" class="demo-section">
-        <div class="container">
-            <h2 class="section-title">Interactive LLM Playground</h2>
-            <div class="demo-card">
+            <!-- Interactive Demo / Playground: this IS the hero now -->
+            <div id="demo" class="demo-card hero-demo-card">
                 <div class="demo-grid">
                     <!-- Config Controls -->
                     <div class="demo-controls">
@@ -142,6 +84,10 @@
                                 <button class="btn btn-outline preset-btn" data-prompt="Show example of multi-provider failover." style="padding: 4px 8px; font-size: 0.78rem;">Failover Strategy</button>
                             </div>
                         </div>
+                        <div class="form-group form-inline">
+                            <label class="checkbox-label"><input type="checkbox" id="streamToggle"> Stream response token-by-token</label>
+                            <label class="checkbox-label"><input type="checkbox" id="retryToggle"> Simulate transient failure + auto-retry</label>
+                        </div>
                         <button id="sendBtn" class="btn btn-primary" style="width: 100%;">🚀 Execute Request</button>
                     </div>
 
@@ -167,11 +113,72 @@
                                 <button class="tab-btn" data-lang="js">CommonJS</button>
                                 <button class="tab-btn" data-lang="builder">Builder Pattern</button>
                                 <button class="tab-btn" data-lang="fallback">Resilient Fallback</button>
+                                <button class="tab-btn" data-lang="retry">Retry + Backoff</button>
+                                <button class="tab-btn" data-lang="template">Prompt Template</button>
                             </div>
 
                             <pre id="codeSnippetBox" class="code-snippet-box"></pre>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <div class="hero-buttons">
+                <a href="docs.html" class="btn btn-secondary">📖 API Documentation</a>
+                <a href="https://github.com/Charan-Hari/Integration-LLM" target="_blank" class="btn btn-outline">⭐ Star on GitHub</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Features -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">Key Architectural Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔄</div>
+                    <h3>Multi-Cloud Strategy</h3>
+                    <p>Unified API interface across Azure OpenAI, AWS Bedrock, Google Vertex AI, Ollama, OpenAI, and Anthropic Claude.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🏗️</div>
+                    <h3>Design Patterns</h3>
+                    <p>Architected using Strategy, Abstract Factory, Facade, Builder, and Adapter design patterns for clean extensibility.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Zero-Downtime Switching</h3>
+                    <p>Swap primary LLM providers at runtime without recompiling code or redeploying microservices.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>Resilient Failover</h3>
+                    <p>Built-in <code>FallbackChatService</code> automatically fails over to backup LLMs if primary endpoints experience downtime.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔁</div>
+                    <h3>Retry with Backoff</h3>
+                    <p>New <code>RetryChatService</code> wraps any strategy with configurable exponential-backoff retries for transient errors.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🧩</div>
+                    <h3>Prompt Templating</h3>
+                    <p>New <code>PromptTemplate</code> utility supports <code>{{variable}}</code> interpolation for reusable, type-checked prompts.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📡</div>
+                    <h3>Streaming Responses</h3>
+                    <p>Token-by-token <code>stream()</code> API across all six providers for responsive, real-time UIs.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Token Estimation</h3>
+                    <p>Built-in token heuristic calculator for tracking prompt & completion token consumption across platforms.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📦</div>
+                    <h3>Type-Safe TypeScript</h3>
+                    <p>100% strict TypeScript definition files, Vitest test suite, and CI/CD GitHub Actions pipeline included.</p>
                 </div>
             </div>
         </div>

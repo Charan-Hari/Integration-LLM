@@ -28,8 +28,11 @@ Built with proven design patterns (**Strategy**, **Abstract Factory**, **Adapter
 - **Multi-Cloud & Local Provider Support**: Seamless integration for Azure OpenAI, AWS Bedrock, Google Vertex AI, Ollama (Local/Self-hosted), OpenAI Direct, and Anthropic Claude.
 - **Runtime Switching**: Change LLM strategy dynamically at runtime without redeployment or code refactoring.
 - **Resilient Multi-Provider Failover**: Includes `FallbackChatService` to automatically fall back to secondary LLMs if the primary fails.
+- **Retry with Exponential Backoff**: `RetryChatService` wraps any strategy with configurable retry/backoff for transient errors (rate limits, timeouts).
+- **Prompt Templating**: `PromptTemplate` utility supports `{{variable}}` interpolation for reusable, type-checked prompts.
+- **Streaming Responses**: Token-by-token `stream()` API across all six providers for responsive, real-time UIs.
 - **Token Usage Estimation**: `TokenCalculator` utility for prompt/completion token tracking across providers.
-- **Interactive Documentation & Playground**: Hosted live on [GitHub Pages](https://charan-hari.github.io/Integration-LLM/).
+- **Interactive Documentation & Playground**: Hosted live on [GitHub Pages](https://charan-hari.github.io/Integration-LLM/) — the playground runs a real request the moment you land on the page.
 - **Fully Type-Safe**: Written in strict TypeScript with comprehensive Vitest test coverage and automated GitHub Actions CI.
 
 ---
@@ -40,8 +43,8 @@ Visit the live documentation and interactive playground at:
 👉 **[https://charan-hari.github.io/Integration-LLM/](https://charan-hari.github.io/Integration-LLM/)**
 
 Features of the online portal:
-- Live Interactive LLM Playground with model selection, temperature control, system prompt testing, and real-time execution metrics.
-- Code generator exporting ready-to-use TypeScript, CommonJS, Builder pattern, and Resilient Fallback snippets.
+- Live Interactive LLM Playground — front and center in the hero, with model selection, temperature control, streaming toggle, retry/backoff simulation, and real-time execution metrics.
+- Code generator exporting ready-to-use TypeScript, CommonJS, Builder pattern, Resilient Fallback, Retry + Backoff, and Prompt Template snippets.
 - Interactive API Reference and Architecture Diagram viewer.
 
 ---
@@ -107,6 +110,43 @@ const secondary = new LLMClientBuilder().setPlatform('ollama').setModel('llama3.
 
 const resilientService = new FallbackChatService([primary, secondary]);
 const response = await resilientService.send('Mission-critical prompt');
+```
+
+### 5. Retry with Exponential Backoff (`RetryChatService`)
+
+```typescript
+import { RetryChatService, LLMClientBuilder, registerDefaultFactories } from 'integration-llm';
+
+registerDefaultFactories();
+
+const strategy = new LLMClientBuilder().setPlatform('openai').setModel('gpt-4o').build();
+
+const resilient = new RetryChatService(strategy, {
+  maxAttempts: 3,
+  baseDelayMs: 200,
+  backoffFactor: 2,
+  onRetry: (attempt, err, delayMs) => console.warn(`Retry #${attempt} in ${delayMs}ms:`, err.message)
+});
+
+const response = await resilient.send('Explain the Adapter pattern.');
+```
+
+### 6. Prompt Templating (`PromptTemplate`)
+
+```typescript
+import { PromptTemplate } from 'integration-llm';
+
+const template = PromptTemplate.from('Explain {{topic}} to a {{audience}}.');
+const prompt = template.format({ topic: 'the Adapter pattern', audience: 'junior developer' });
+```
+
+### 7. Streaming Responses (`stream()`)
+
+```typescript
+for await (const chunk of chatService.stream('Explain the Strategy Pattern.')) {
+  process.stdout.write(chunk.contentFragment);
+  if (chunk.isLast) break;
+}
 ```
 
 ---

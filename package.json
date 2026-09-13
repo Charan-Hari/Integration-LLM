@@ -1,6 +1,6 @@
 {
   "name": "Integration-LLM",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "A TypeScript library for provider-agnostic LLM integration with support for Azure OpenAI, AWS Bedrock, Google Vertex AI, Ollama, OpenAI, and Anthropic Claude using Strategy, Factory, and Adapter design patterns.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
