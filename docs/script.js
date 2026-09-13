@@ -73,6 +73,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Copy-to-clipboard for static documentation code snippets (Getting Started / API Reference)
+  document.querySelectorAll('.snippet-copy-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const box = btn.parentElement.querySelector('.code-snippet-box');
+      if (!box) return;
+      navigator.clipboard.writeText(box.textContent.trim()).then(() => {
+        const original = btn.textContent;
+        btn.textContent = '✅ Copied';
+        setTimeout(() => { btn.textContent = original; }, 1500);
+      });
+    });
+  });
+
   // Populate models
   function populateModels() {
     if (!platformSelect || !modelSelect) return;

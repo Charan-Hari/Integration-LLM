@@ -101,6 +101,19 @@ body {
   color: var(--primary);
 }
 
+/* Nav CTA buttons (e.g. GitHub Repo) must keep their own text color, not the muted nav link color */
+.nav-links a.btn {
+  color: #ffffff;
+}
+
+.nav-links a.btn:hover {
+  color: #ffffff;
+}
+
+.nav-links a.btn-outline {
+  color: var(--text-main);
+}
+
 @media (max-width: 850px) {
   .nav-links {
     display: none;
@@ -418,6 +431,28 @@ body {
 
 .snippet-block {
   margin-top: 20px;
+  position: relative;
+}
+
+.snippet-copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+  background: var(--card-bg);
+  color: var(--text-main);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 0.78rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.snippet-copy-btn:hover {
+  background-color: var(--primary);
+  color: #ffffff;
+  border-color: var(--primary);
 }
 
 .code-snippet-box {

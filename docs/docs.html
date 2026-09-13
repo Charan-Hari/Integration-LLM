@@ -99,9 +99,14 @@
             <p style="margin: 12px 0 20px 0; color: var(--text-muted);">Integration-LLM allows you to write provider-agnostic code for Azure OpenAI, AWS Bedrock, Google Vertex AI, Ollama, OpenAI, and Anthropic Claude.</p>
             
             <h3>Installation</h3>
-            <div class="code-snippet-box" style="margin: 12px 0;">npm install integration-llm</div>
+            <div class="snippet-block" style="margin: 12px 0;">
+                <button class="snippet-copy-btn" type="button">📋 Copy</button>
+                <div class="code-snippet-box" style="height: auto;">npm install integration-llm</div>
+            </div>
 
             <h3>Basic Usage Example</h3>
+            <div class="snippet-block">
+            <button class="snippet-copy-btn" type="button">📋 Copy</button>
             <pre class="code-snippet-box">import { ChatService, registerDefaultFactories } from 'integration-llm';
 
 // 1. Register default provider factories
@@ -126,6 +131,7 @@ console.log('Model:', response.model);
 console.log('Response Content:', response.content);
 console.log('Prompt Tokens:', response.usage.promptTokens);
 console.log('Completion Tokens:', response.usage.completionTokens);</pre>
+            </div>
         </section>
 
         <!-- API Reference -->
@@ -142,15 +148,20 @@ console.log('Completion Tokens:', response.usage.completionTokens);</pre>
 
             <h3 style="margin-top: 24px;">2. LLMClientBuilder</h3>
             <p style="color: var(--text-muted);">Fluent builder for constructing and calling LLM strategies step by step.</p>
+            <div class="snippet-block">
+            <button class="snippet-copy-btn" type="button">📋 Copy</button>
             <pre class="code-snippet-box">import { LLMClientBuilder } from 'integration-llm';
 
 const response = await new LLMClientBuilder()
   .setPlatform('azure')
   .setModel('gpt-4o')
   .send('Summarize AI strategy.', { temperature: 0.5 });</pre>
+            </div>
 
             <h3 style="margin-top: 24px;">3. FallbackChatService (Resilience & Failover)</h3>
             <p style="color: var(--text-muted);">Automatically attempts backup LLMs sequentially if the primary LLM fails or is rate-limited.</p>
+            <div class="snippet-block">
+            <button class="snippet-copy-btn" type="button">📋 Copy</button>
             <pre class="code-snippet-box">import { FallbackChatService, LLMClientBuilder } from 'integration-llm';
 
 const primary = new LLMClientBuilder().setPlatform('azure').setModel('gpt-4o').build();
@@ -158,13 +169,17 @@ const secondary = new LLMClientBuilder().setPlatform('ollama').setModel('llama3.
 
 const resilientService = new FallbackChatService([primary, secondary]);
 const response = await resilientService.send('Important prompt');</pre>
+            </div>
 
             <h3 style="margin-top: 24px;">4. TokenCalculator</h3>
             <p style="color: var(--text-muted);">Utility function to estimate prompt and completion tokens for billing & monitoring.</p>
+            <div class="snippet-block">
+            <button class="snippet-copy-btn" type="button">📋 Copy</button>
             <pre class="code-snippet-box">import { TokenCalculator } from 'integration-llm';
 
 const tokens = TokenCalculator.estimateTokenCount('Sample text prompt');
 const usage = TokenCalculator.createUsage('User prompt', 'Model completion');</pre>
+            </div>
         </section>
 
         <!-- Design Patterns -->
